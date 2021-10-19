@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
-import org.jboss.jandex.Main;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Objects;
@@ -27,6 +25,7 @@ public class Maintenance {
     private int id;
 
     @ManyToOne()
+    @JoinColumn(updatable = false, insertable = false, name = "treeviewid")
     private Treeview treeviewId;
 
     @Column(name = "startdaytime")
