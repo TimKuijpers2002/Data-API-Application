@@ -28,9 +28,6 @@ public class MonitoringData202009 {
     @Column(name = "port")
     private int port;
 
-    @Column(name = "machine_monitoring_poortenid")
-    private int machineMonitoringPortsId;
-
     @Column(name = "timestamp")
     private Date timestamp;
 

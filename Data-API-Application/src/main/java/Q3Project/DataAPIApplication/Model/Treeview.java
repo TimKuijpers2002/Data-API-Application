@@ -7,12 +7,7 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
@@ -122,7 +117,7 @@ public class Treeview {
 
     @JoinColumn(name="treeviewid", nullable=false)
     @OneToMany
-    private List<Maintenance> maintenances;
+    private Set<Maintenance> maintenances;
 
     @Override
     public boolean equals(Object o) {
