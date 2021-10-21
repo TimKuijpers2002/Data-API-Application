@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface ITreeviewService {
 
-    List<Treeview> GetAllTreeview();
+    List<Treeview> GetAllMachines();
+    List<Treeview> GetAllComponents();
 }

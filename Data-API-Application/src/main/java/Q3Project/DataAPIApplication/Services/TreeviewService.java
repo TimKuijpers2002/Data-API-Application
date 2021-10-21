@@ -16,9 +16,24 @@ public class TreeviewService implements ITreeviewService {
         this.treeviewRepository = treeviewRepository;
     }
 
-    @Override
-    public List<Treeview> GetAllTreeview() {
+    public List<Treeview> GetAllTreeviews() {
         return treeviewRepository.findAll();
 
+    }
+
+    @Override
+    public List<Treeview> GetAllMachines() {
+        List<Treeview> allTreeviews = GetAllTreeviews();
+        int machineId = 16;
+        allTreeviews.removeIf(item -> item.getTreeviewSoortId() != machineId);
+        return allTreeviews;
+    }
+
+    @Override
+    public List<Treeview> GetAllComponents() {
+        List<Treeview> allTreeviews = GetAllTreeviews();
+        int componentId = 2;
+        allTreeviews.removeIf(item -> item.getTreeviewSoortId() != componentId);
+        return allTreeviews;
     }
 }
