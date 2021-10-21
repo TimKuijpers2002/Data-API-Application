@@ -1,5 +1,6 @@
 package Q3Project.DataAPIApplication.Services;
 
+import Q3Project.DataAPIApplication.Enums.TreeviewTypes;
 import Q3Project.DataAPIApplication.Interface.ITreeviewService;
 import Q3Project.DataAPIApplication.Model.Treeview;
 import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
@@ -24,16 +25,14 @@ public class TreeviewService implements ITreeviewService {
     @Override
     public List<Treeview> GetAllMachines() {
         List<Treeview> allTreeviews = GetAllTreeviews();
-        int machineId = 16;
-        allTreeviews.removeIf(item -> item.getTreeviewSoortId() != machineId);
+        allTreeviews.removeIf(item -> item.getTreeviewSoortId() != TreeviewTypes.MACHINE.treeviewSoortId);
         return allTreeviews;
     }
 
     @Override
     public List<Treeview> GetAllComponents() {
         List<Treeview> allTreeviews = GetAllTreeviews();
-        int componentId = 2;
-        allTreeviews.removeIf(item -> item.getTreeviewSoortId() != componentId);
+        allTreeviews.removeIf(item -> item.getTreeviewSoortId() != TreeviewTypes.COMPONENT.treeviewSoortId);
         return allTreeviews;
     }
 }
