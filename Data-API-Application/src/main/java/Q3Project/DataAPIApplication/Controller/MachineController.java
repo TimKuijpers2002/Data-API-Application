@@ -1,6 +1,6 @@
 package Q3Project.DataAPIApplication.Controller;
 
-import Q3Project.DataAPIApplication.Interface.ITreeviewService;
+import Q3Project.DataAPIApplication.Interface.IMachineAndComponentService;
 import Q3Project.DataAPIApplication.Model.Treeview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +14,11 @@ import java.util.List;
 public class MachineController {
 
     @Autowired
-    private ITreeviewService service;
+    private IMachineAndComponentService<Treeview> service;
 
     @GetMapping("/machines")
     public List<Treeview> GetAllMachines(){
-        return service.GetAllMachines();
+        return service.GetAllFromMachines();
     }
 
 }
