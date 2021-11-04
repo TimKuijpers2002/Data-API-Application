@@ -20,7 +20,7 @@ public class Tellerbasis {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int counterBaseId;
+    private long counterBaseId;
 
     @Column(name = "naam")
     private String name;

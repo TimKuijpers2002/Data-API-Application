@@ -24,5 +24,4 @@ public class MachineController {
     public List<Treeview> GetAllMachines(){
         return service.GetAllFromMachines();
     }
-
 }

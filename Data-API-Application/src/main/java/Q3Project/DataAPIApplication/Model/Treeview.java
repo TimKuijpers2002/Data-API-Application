@@ -20,7 +20,7 @@ public class Treeview {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int treeviewid;
+    private long treeviewid;
 
     @Column(name = "object")
     private String object;

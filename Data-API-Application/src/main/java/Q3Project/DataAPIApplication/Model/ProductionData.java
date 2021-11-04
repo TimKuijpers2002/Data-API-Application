@@ -21,7 +21,7 @@ public class ProductionData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int productionDataId;
+    private long productionDataId;
     @Column(name = "treeview_id")
     private int treeviewId;
     @Column(name = "treeview2_id")

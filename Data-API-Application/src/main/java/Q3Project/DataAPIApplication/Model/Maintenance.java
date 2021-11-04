@@ -22,7 +22,7 @@ public class Maintenance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    private int id;
+    private long id;
 
     @ManyToOne()
     @JoinColumn(updatable = false, insertable = false, name = "treeviewid")

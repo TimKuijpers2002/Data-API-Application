@@ -21,7 +21,7 @@ public class MonitoringData202009 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int monitoringData202009Id;
+    private long monitoringData202009Id;
     @Column(name = "board")
     private int board;
 

@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Entity
 @Table(name = "tellerstanden")
 public class Tellerstanden {
@@ -16,7 +15,7 @@ public class Tellerstanden {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int counterPositionId;
+    private long counterPositionId;
 
     @Column(name = "waarde")
     private double value;
