@@ -1,7 +1,7 @@
 package Q3Project.DataAPIApplication.Services;
 
 import Q3Project.DataAPIApplication.Enums.TreeviewTypes;
-import Q3Project.DataAPIApplication.Interface.IMachineAndComponentService;
+import Q3Project.DataAPIApplication.Interface.ITreeviewService;
 import Q3Project.DataAPIApplication.Model.Treeview;
 import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TreeviewService implements IMachineAndComponentService<Treeview> {
+public class TreeviewService implements ITreeviewService {
 
     private final TreeviewRepository treeviewRepository;
 
@@ -18,9 +18,13 @@ public class TreeviewService implements IMachineAndComponentService<Treeview> {
     }
 
     @Override
+    public Treeview GetByTreeviewId(long treeviewId) {
+        return treeviewRepository.findById(treeviewId).get();
+    }
+
+    @Override
     public List<Treeview> GetAll() {
         return treeviewRepository.findAll();
-
     }
 
     @Override
