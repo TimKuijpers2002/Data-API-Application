@@ -10,4 +10,5 @@ public interface ITreeviewService {
     List<Treeview> GetAll();
     List<Treeview> GetAllFromMachines();
     List<Treeview> GetAllFromComponents();
+    List<Treeview> GetAllComponentsFromMachine(long treeviewId);
 }

@@ -1,8 +1,10 @@
 package Q3Project.DataAPIApplication.Services;
 
-import Q3Project.DataAPIApplication.Model.MonitoringData202009;
+import Q3Project.DataAPIApplication.Enums.TreeviewTypes;
 import Q3Project.DataAPIApplication.Model.ProductionData;
+import Q3Project.DataAPIApplication.Model.Treeview;
 import Q3Project.DataAPIApplication.Repository.ProductionDataRepository;
+import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,12 +13,14 @@ import java.util.List;
 public class ProductionDataService {
 
     private final ProductionDataRepository productionDataRepository;
+    private final TreeviewRepository treeviewRepository;
 
-    public ProductionDataService(ProductionDataRepository productionDataRepository) {
+    public ProductionDataService(ProductionDataRepository productionDataRepository, TreeviewRepository treeviewRepository) {
         this.productionDataRepository = productionDataRepository;
+        this.treeviewRepository = treeviewRepository;
     }
 
-    public List<ProductionData> GetAllByBoardPort(long board, long port) {
+    public List<ProductionData> GetComponentsFromMachine(int board, int port) {
         List<ProductionData> allProductionData = productionDataRepository.findAll();
         allProductionData.removeIf(item -> item.getBoard() != board);
         allProductionData.removeIf(item -> item.getPort() != port);
