@@ -21,15 +21,12 @@ public class MonitoringData202009 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int monitoringData202009Id;
+    private long monitoringData202009Id;
     @Column(name = "board")
     private int board;
 
     @Column(name = "port")
     private int port;
-
-    @Column(name = "machine_monitoring_poortenid")
-    private int machineMonitoringPortsId;
 
     @Column(name = "timestamp")
     private Date timestamp;

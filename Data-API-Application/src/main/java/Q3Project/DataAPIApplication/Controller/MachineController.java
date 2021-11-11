@@ -8,15 +8,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/api")
-public class TreeviewController {
+public class MachineController {
 
     @Autowired
     private ITreeviewService service;
 
-    @GetMapping("/treeview")
-    public List<Treeview> GetAllTreeview(){
-        return service.GetAllTreeview();
+    @GetMapping("/machine/{id}")
+    public Treeview GetMachineById(@PathVariable(value = "id") long treeviewId){
+        return service.GetByTreeviewId(treeviewId);
     }
 
+    @GetMapping("/machines")
+    public List<Treeview> GetAllMachines(){
+        return service.GetAllFromMachines();
+    }
 }

@@ -20,7 +20,7 @@ public class MachineMonitoringPoorten {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int machineMonitoringPoortenId;
+    private long machineMonitoringPoortenId;
 
     @Column(name = "board")
     private int board;

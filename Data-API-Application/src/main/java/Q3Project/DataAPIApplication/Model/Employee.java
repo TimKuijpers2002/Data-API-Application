@@ -7,8 +7,8 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,7 +21,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "employee_id")
-    private int employeeId;
+    private long employeeId;
     @Column(name = "naam")
     private String name;
     @Column(name = "email")
@@ -35,7 +35,7 @@ public class Employee {
             joinColumns = { @JoinColumn(name = "employee_id") },
             inverseJoinColumns = { @JoinColumn(name = "role_id") }
     )
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @Override
     public boolean equals(Object o) {

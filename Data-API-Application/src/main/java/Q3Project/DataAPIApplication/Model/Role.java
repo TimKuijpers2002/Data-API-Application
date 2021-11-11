@@ -20,7 +20,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "role_id")
-    private int roleId;
+    private long roleId;
 
     @Column(name = "name")
     private String name;
