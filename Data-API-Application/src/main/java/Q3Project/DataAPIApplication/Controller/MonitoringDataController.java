@@ -22,9 +22,9 @@ public class MonitoringDataController {
         return service.GetAllFromMachine(board, port);
     }
 
-    @GetMapping("/monitoringdata/{board}/{port}/{datetime}")
-    public List<MonitoringData202009> GetAllMonitoringDataPerDay(@PathVariable(value = "board") int board, @PathVariable(value = "port") int port, @PathVariable(value = "datetime") String datetime) throws ParseException {
-        return service.GetAllFromMachinePerDay(board, port, datetime);
+    @GetMapping("/monitoringdata/{machinename}/{datetime}")
+    public List<MonitoringData202009> GetAllMonitoringDataPerDay(@PathVariable(value = "machinename") String machineName, @PathVariable(value = "datetime") String datetime) throws ParseException {
+        return service.GetAllFromMachinePerDay(machineName, datetime);
     }
 
 }
