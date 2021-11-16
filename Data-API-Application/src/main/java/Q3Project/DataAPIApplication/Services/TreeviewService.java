@@ -56,10 +56,10 @@ public class TreeviewService implements ITreeviewService {
     }
 
     @Override
-    public List<Treeview> GetAllComponentsFromMachine(long treeviewId) {
+    public List<Treeview> GetAllComponentsFromMachine(String treeviewName) {
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
         allMachines.removeIf
-                (item -> !Objects.equals(item.getName(), GetByTreeviewId(treeviewId).getName()));
+                (item -> !Objects.equals(item.getName(), treeviewName));
         MachineMonitoringPoorten machine = allMachines.stream().findFirst().get();
         List<ProductionData> allComponentsProductions = productionDataService
                 .GetComponentsFromMachine(machine.getBoard(), machine.getPort());
