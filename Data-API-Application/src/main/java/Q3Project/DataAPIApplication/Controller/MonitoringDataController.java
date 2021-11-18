@@ -24,7 +24,10 @@ public class MonitoringDataController {
 
     @GetMapping("/monitoringdata/{machinename}/{datetime}")
     public List<MonitoringData202009> GetAllMonitoringDataPerDay(@PathVariable(value = "machinename") String machineName, @PathVariable(value = "datetime") String datetime) throws ParseException {
-        return service.GetAllFromMachinePerDay(machineName, datetime);
+        long start1 = System.nanoTime();
+        var data = service.GetAllFromMachinePerDay(machineName, datetime);
+        long end1 = System.nanoTime();
+        return data;
     }
 
 }
