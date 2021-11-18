@@ -11,6 +11,6 @@ import java.util.List;
 @Transactional
 @Repository
 public interface MonitoringData202009Repository extends JpaRepository<MonitoringData202009, Long> {
-    @Query(value="SELECT m.timestamp, m.shotTime FROM MonitoringData202009 as m WHERE m.board= ?1 AND m.port = ?2")
+    @Query(value="SELECT m FROM MonitoringData202009 m WHERE m.board= ?1 AND m.port = ?2")
     List<MonitoringData202009> findByBoardPort(int board, int port);
 }
