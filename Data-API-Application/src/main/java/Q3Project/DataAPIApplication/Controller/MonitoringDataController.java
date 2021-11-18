@@ -27,6 +27,7 @@ public class MonitoringDataController {
         long start1 = System.nanoTime();
         var data = service.GetAllFromMachinePerDay(machineName, datetime);
         long end1 = System.nanoTime();
+        System.out.println("Elapsed Time in nano seconds: "+ (end1-start1));
         return data;
     }
 
