@@ -1,13 +1,14 @@
 package Q3Project.DataAPIApplication.Services;
 
-import Q3Project.DataAPIApplication.Enums.TreeviewTypes;
 import Q3Project.DataAPIApplication.Model.ProductionData;
-import Q3Project.DataAPIApplication.Model.Treeview;
 import Q3Project.DataAPIApplication.Repository.ProductionDataRepository;
 import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Time;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -28,7 +29,10 @@ public class ProductionDataService {
         return allProductionData;
     }
 
-    public List<ProductionData> GetComponentsFromMachineOnDate(int board, int port, Date date, Date time){
-        return productionDataRepository.findByBPAndDate(board, port, date, time);
+    public List<ProductionData> GetComponentsFromMachineOnDate(int board, int port, String date, String time) throws ParseException {
+        Date currentDay = new Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime());
+        Time currentTime = new Time(new SimpleDateFormat("HH:mm:ss").parse(time).getTime());
+
+        return productionDataRepository.findByBPAndDate(board, port, currentDay, currentTime);
     }
 }

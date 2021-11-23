@@ -8,6 +8,8 @@ import Q3Project.DataAPIApplication.Model.Treeview;
 import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -69,12 +71,10 @@ public class TreeviewService implements ITreeviewService {
     public List<Treeview> GetHistoryComponentsFromMachine(String treeviewName, String date, String time) throws ParseException {
         MachineMonitoringPoorten machine = machineMonitoringPoortenService.GetByName(treeviewName);
 
-        Date currentDay = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(time);
         List<ProductionData> allComponentsProductions = productionDataService
-                .GetComponentsFromMachineOnDate(machine.getBoard(), machine.getPort(), currentDay, currentTime);
+                .GetComponentsFromMachineOnDate(machine.getBoard(), machine.getPort(), date, time);
         Set<Long> allComponents = GetTreeviewsByName(allComponentsProductions);
-        return treeviewRepository.findAllById(GetTreeviewsByName(allComponentsProductions));
+        return treeviewRepository.findAllById(allComponents);
     }
 
     public Set<Long> GetTreeviewsByName(List<ProductionData> productionDataList){
