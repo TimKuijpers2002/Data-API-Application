@@ -66,11 +66,11 @@ public class TreeviewService implements ITreeviewService {
     }
 
     @Override
-    public List<Treeview> GetHistoryComponentsFromMachine(String treeviewName, String datetime) throws ParseException {
+    public List<Treeview> GetHistoryComponentsFromMachine(String treeviewName, String date, String time) throws ParseException {
         MachineMonitoringPoorten machine = machineMonitoringPoortenService.GetByName(treeviewName);
 
-        Date currentDay = new SimpleDateFormat("yyyy-MM-dd").parse(datetime);
-        Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(datetime);
+        Date currentDay = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(time);
         List<ProductionData> allComponentsProductions = productionDataService
                 .GetComponentsFromMachineOnDate(machine.getBoard(), machine.getPort(), currentDay, currentTime);
         Set<Long> allComponents = GetTreeviewsByName(allComponentsProductions);

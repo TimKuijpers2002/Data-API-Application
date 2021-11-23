@@ -32,8 +32,8 @@ public class ComponentController {
         return service.GetAllComponentsFromMachine(treeviewName);
     }
 
-    @GetMapping("/components/{name}/{datetime}")
-    public List<Treeview> GetHistoryComponentsFromMachine(@PathVariable(value = "name") String treeviewName, @PathVariable(value = "datetime") String dateTime) throws ParseException {
-        return service.GetHistoryComponentsFromMachine(treeviewName, dateTime);
+    @GetMapping("/components/{name}/{date}/{time}")
+    public List<Treeview> GetHistoryComponentsFromMachine(@PathVariable(value = "name") String treeviewName, @PathVariable(value = "date") String date, @PathVariable(value = "time") String time) throws ParseException {
+        return service.GetHistoryComponentsFromMachine(treeviewName, date, time);
     }
 }
