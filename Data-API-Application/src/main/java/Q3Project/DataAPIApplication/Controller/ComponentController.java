@@ -5,6 +5,8 @@ import Q3Project.DataAPIApplication.Model.Treeview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -26,7 +28,17 @@ public class ComponentController {
     }
 
     @GetMapping("/components/{name}")
-    public List<Treeview> GetComponentsFromTreeviewById(@PathVariable(value = "name") String treeviewName){
+    public List<Treeview> GetHistoryComponentsFromMachine(@PathVariable(value = "name") String treeviewName){
         return service.GetAllComponentsFromMachine(treeviewName);
+    }
+
+    @GetMapping("/components/{name}")
+    public List<Treeview> GetAllComponentsFromMachine(@PathVariable(value = "name") String treeviewName){
+        return service.GetAllComponentsFromMachine(treeviewName);
+    }
+
+    @GetMapping("/components/{name}/{datetime}")
+    public List<Treeview> GetHistoryComponentsFromMachine(@PathVariable(value = "name") String treeviewName, @PathVariable(value = "datetime") String dateTime) throws ParseException {
+        return service.GetHistoryComponentsFromMachine(treeviewName, dateTime);
     }
 }

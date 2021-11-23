@@ -8,6 +8,8 @@ import Q3Project.DataAPIApplication.Model.Treeview;
 import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -57,18 +59,31 @@ public class TreeviewService implements ITreeviewService {
 
     @Override
     public List<Treeview> GetAllComponentsFromMachine(String treeviewName) {
-        List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
-        allMachines.removeIf
-                (item -> !Objects.equals(item.getName(), treeviewName));
-        MachineMonitoringPoorten machine = allMachines.stream().findFirst().get();
+        MachineMonitoringPoorten machine = machineMonitoringPoortenService.GetByName(treeviewName);
         List<ProductionData> allComponentsProductions = productionDataService
                 .GetComponentsFromMachine(machine.getBoard(), machine.getPort());
+        return treeviewRepository.findAllById(GetTreeviewsByName(allComponentsProductions));
+    }
+
+    @Override
+    public List<Treeview> GetHistoryComponentsFromMachine(String treeviewName, String datetime) throws ParseException {
+        MachineMonitoringPoorten machine = machineMonitoringPoortenService.GetByName(treeviewName);
+
+        Date currentDay = new SimpleDateFormat("yyyy-MM-dd").parse(datetime);
+        Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(datetime);
+        List<ProductionData> allComponentsProductions = productionDataService
+                .GetComponentsFromMachineOnDate(machine.getBoard(), machine.getPort(), currentDay, currentTime);
+        Set<Long> allComponents = GetTreeviewsByName(allComponentsProductions);
+        return treeviewRepository.findAllById(GetTreeviewsByName(allComponentsProductions));
+    }
+
+    public Set<Long> GetTreeviewsByName(List<ProductionData> productionDataList){
         Set<Long> allTreeviewIds = new HashSet<>();
-        for(ProductionData currentData: allComponentsProductions){
+        for(ProductionData currentData: productionDataList){
             allTreeviewIds.add((long) currentData.getTreeviewId());
             allTreeviewIds.add((long) currentData.getTreeview2Id());
         }
         allTreeviewIds.removeIf(item -> item == 0);
-        return treeviewRepository.findAllById(allTreeviewIds);
+        return allTreeviewIds;
     }
 }

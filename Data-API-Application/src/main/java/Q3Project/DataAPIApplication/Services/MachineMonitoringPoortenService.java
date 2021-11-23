@@ -21,4 +21,8 @@ public class MachineMonitoringPoortenService {
         allMachines.removeIf(item -> item.getName() == null);
         return allMachines;
     }
+
+    public MachineMonitoringPoorten GetByName(String name){
+        return machineMonitoringPoortenRepository.findByName(name);
+    }
 }

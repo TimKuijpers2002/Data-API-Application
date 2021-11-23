@@ -3,6 +3,7 @@ package Q3Project.DataAPIApplication.Controller;
 import Q3Project.DataAPIApplication.Interface.IMonitoringDataService;
 import Q3Project.DataAPIApplication.Interface.ITreeviewService;
 import Q3Project.DataAPIApplication.Model.MonitoringData202009;
+import Q3Project.DataAPIApplication.Model.ReturnableMonitoringData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,18 +18,14 @@ public class MonitoringDataController {
     @Autowired
     private IMonitoringDataService service;
 
-    @GetMapping("/monitoringdatas/{board}/{port}")
-    public List<MonitoringData202009> GetAllMonitoringData(@PathVariable(value = "board") int board, @PathVariable(value = "port") int port){
-        return service.GetAllFromMachine(board, port);
+    @GetMapping("/monitoringdatas/{name}")
+    public List<MonitoringData202009> GetAllMonitoringData(@PathVariable(value = "name") String name){
+        return service.GetAllFromMachine(name);
     }
 
     @GetMapping("/monitoringdata/{machinename}/{datetime}")
     public List<MonitoringData202009> GetAllMonitoringDataPerDay(@PathVariable(value = "machinename") String machineName, @PathVariable(value = "datetime") String datetime) throws ParseException {
-        long start1 = System.nanoTime();
-        var data = service.GetAllFromMachinePerDay(machineName, datetime);
-        long end1 = System.nanoTime();
-        System.out.println("Elapsed Time in nano seconds: "+ (end1-start1));
-        return data;
+        return service.GetAllFromMachinePerDay(machineName, datetime);
     }
 
 }

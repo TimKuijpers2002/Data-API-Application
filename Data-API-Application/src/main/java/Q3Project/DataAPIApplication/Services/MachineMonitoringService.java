@@ -1,10 +1,7 @@
 package Q3Project.DataAPIApplication.Services;
 
 import Q3Project.DataAPIApplication.Interface.IMonitoringDataService;
-import Q3Project.DataAPIApplication.Model.MachineMonitoringPoorten;
-import Q3Project.DataAPIApplication.Model.MonitoringData202009;
-import Q3Project.DataAPIApplication.Model.ProductionData;
-import Q3Project.DataAPIApplication.Model.Treeview;
+import Q3Project.DataAPIApplication.Model.*;
 import Q3Project.DataAPIApplication.Repository.MachineMonitoringPoortenRepository;
 import Q3Project.DataAPIApplication.Repository.MonitoringData202009Repository;
 import org.springframework.stereotype.Service;
@@ -27,22 +24,21 @@ public class MachineMonitoringService implements IMonitoringDataService {
     }
 
     @Override
-    public List<MonitoringData202009> GetAllFromMachine(int board, int port) {
-        return monitoringData202009Repository.findByBoardPort(board, port);
+    public List<MonitoringData202009> GetAllFromMachine(String name) {
+        return monitoringData202009Repository.findByName(name);
     }
 
     @Override
     public List<MonitoringData202009> GetAllFromMachinePerDay(String machineName, String datetime) throws ParseException {
-        MachineMonitoringPoorten machineInsight = machineMonitoringPoortenRepository.findByName(machineName).stream().findFirst().get();
-        List<MonitoringData202009> dataFromOneMachine = monitoringData202009Repository.findByBoardPort(machineInsight.getBoard(), machineInsight.getPort());
-        Date requestedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(datetime);
-        dataFromOneMachine.removeIf(item -> item.getTimestamp().before(requestedDate));
+        long start1 = System.nanoTime();
+        Date beginDay = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(datetime);
         Calendar c = Calendar.getInstance();
-        c.setTime(requestedDate);
+        c.setTime(beginDay);
         c.add(Calendar.DATE, 1);
-        Date finalRequestedDate = c.getTime();
-        dataFromOneMachine.removeIf(item -> item.getTimestamp().after(finalRequestedDate));
-        return dataFromOneMachine;
+        Date endDay = c.getTime();
+        long end1 = System.nanoTime();
+        System.out.println("Elapsed Time in nano seconds: "+ (end1-start1));
+        return monitoringData202009Repository.findByNameAndDate(machineName, beginDay, endDay);
     }
 
     @Override

@@ -7,6 +7,7 @@ import Q3Project.DataAPIApplication.Repository.ProductionDataRepository;
 import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,5 +26,9 @@ public class ProductionDataService {
         allProductionData.removeIf(item -> item.getBoard() != board);
         allProductionData.removeIf(item -> item.getPort() != port);
         return allProductionData;
+    }
+
+    public List<ProductionData> GetComponentsFromMachineOnDate(int board, int port, Date date, Date time){
+        return productionDataRepository.findByBPAndDate(board, port, date, time);
     }
 }

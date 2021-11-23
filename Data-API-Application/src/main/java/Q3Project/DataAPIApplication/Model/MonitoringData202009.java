@@ -37,6 +37,12 @@ public class MonitoringData202009 {
     @Column(name = "previous_shot_id")
     private int previousShotId;
 
+
+    public MonitoringData202009(Date timeStamp, long shottime){
+        this.timestamp = timeStamp;
+        this.shotTime = shottime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

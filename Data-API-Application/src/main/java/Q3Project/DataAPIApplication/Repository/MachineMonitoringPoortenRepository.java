@@ -12,5 +12,5 @@ import java.util.List;
 public interface MachineMonitoringPoortenRepository extends JpaRepository<MachineMonitoringPoorten, Long> {
 
     @Query(value="SELECT m FROM MachineMonitoringPoorten m WHERE m.name= ?1")
-    List<MachineMonitoringPoorten> findByName(String name);
+    MachineMonitoringPoorten findByName(String name);
 }
