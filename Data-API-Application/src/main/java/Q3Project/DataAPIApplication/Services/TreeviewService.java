@@ -4,11 +4,14 @@ import Q3Project.DataAPIApplication.Interface.ITreeviewService;
 import Q3Project.DataAPIApplication.Model.MachineMonitoringPoorten;
 import Q3Project.DataAPIApplication.Model.ProductionData;
 import Q3Project.DataAPIApplication.Model.Treeview;
+import Q3Project.DataAPIApplication.Repository.ProductionDataRepository;
 import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
+import com.sun.source.tree.Tree;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.*;
+import java.util.function.Predicate;
 
 @Service
 public class TreeviewService implements ITreeviewService {
@@ -78,5 +81,28 @@ public class TreeviewService implements ITreeviewService {
         }
         allTreeviewIds.removeIf(item -> item == 0);
         return allTreeviewIds;
+    }
+
+    public List<MachineMonitoringPoorten> GetMachinesByComponentId(List<ProductionData> productionDataList){
+        List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
+        for(ProductionData currentData: productionDataList){
+            allMachines.removeIf(machine -> machine.getBoard() != currentData.getBoard() || machine.getPort() != currentData.getPort());
+        }
+        return allMachines;
+    }
+
+    @Override
+    public Set<Treeview> GetMachineHistoryByComponentName(String componentName)
+    {
+        Treeview component = treeviewRepository.findByName(componentName);
+        List<ProductionData> allProductionData = productionDataService.GetProductionDataFromComponent(component.getTreeviewid());
+        List<MachineMonitoringPoorten> allMachines = GetMachinesByComponentId(allProductionData);
+        List<Treeview> allTreeview = GetAllMachines();
+        for (MachineMonitoringPoorten currentMachine: allMachines)
+        {
+            Predicate<Treeview> condition = treeview -> !treeview.getName().equals(currentMachine.getName());
+            allTreeview.removeIf(condition);
+        }
+        return new HashSet<>(allTreeview);
     }
 }
