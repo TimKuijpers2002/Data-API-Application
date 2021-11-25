@@ -10,8 +10,8 @@ public interface ITreeviewService {
 
     Treeview GetByTreeviewId(long treeviewId);
     List<Treeview> GetAll();
-    List<Treeview> GetAllFromMachines();
-    List<Treeview> GetAllFromComponents();
+    List<Treeview> GetAllMachines();
+    List<Treeview> GetAllComponents();
     List<Treeview> GetAllComponentsFromMachine(String treeviewName);
-    List<Treeview> GetHistoryComponentsFromMachine(String treeviewName, String dateTime) throws ParseException;
+    List<Treeview> GetComponentHistoryFromMachine(String treeviewName, String dateTime) throws ParseException;
 }

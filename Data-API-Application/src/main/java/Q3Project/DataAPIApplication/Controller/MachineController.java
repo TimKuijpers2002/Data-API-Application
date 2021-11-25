@@ -22,6 +22,6 @@ public class MachineController {
 
     @GetMapping("/machines")
     public List<Treeview> GetAllMachines(){
-        return service.GetAllFromMachines();
+        return service.GetAllMachines();
     }
 }

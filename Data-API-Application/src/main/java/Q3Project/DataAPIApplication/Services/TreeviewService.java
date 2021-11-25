@@ -1,6 +1,5 @@
 package Q3Project.DataAPIApplication.Services;
 
-import Q3Project.DataAPIApplication.Enums.TreeviewTypes;
 import Q3Project.DataAPIApplication.Interface.ITreeviewService;
 import Q3Project.DataAPIApplication.Model.MachineMonitoringPoorten;
 import Q3Project.DataAPIApplication.Model.ProductionData;
@@ -8,10 +7,7 @@ import Q3Project.DataAPIApplication.Model.Treeview;
 import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -38,24 +34,21 @@ public class TreeviewService implements ITreeviewService {
     }
 
     @Override
-    public List<Treeview> GetAllFromMachines() {
+    public List<Treeview> GetAllMachines() {
+        List<Treeview> allTreeviews = GetAll();
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
-        List<Treeview> allTreeview = GetAll();
-        List<Treeview> allConfirmedMachines = new ArrayList<>();
-        for(MachineMonitoringPoorten currentMachine: allMachines){
-            for(Treeview treeview: allTreeview){
-                if(Objects.equals(treeview.getName(), currentMachine.getName())){
-                    allConfirmedMachines.add(treeview);
-                }
-            }
+        for(MachineMonitoringPoorten machine: allMachines){
+            allTreeviews.removeIf(treeview -> treeview.getName().equals(machine.getName()));
         }
-        return allConfirmedMachines;
+        return allTreeviews;
     }
 
     @Override
-    public List<Treeview> GetAllFromComponents() {
+    public List<Treeview> GetAllComponents() {
         List<Treeview> allTreeviews = GetAll();
-        allTreeviews.removeIf(item -> item.getTreeviewSoortId() != TreeviewTypes.COMPONENT.treeviewSoortId);
+        List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
+        for(MachineMonitoringPoorten machine: allMachines){
+            allTreeviews.removeIf(treeview -> treeview.getName().equals(machine.getName()));        }
         return allTreeviews;
     }
 
@@ -68,7 +61,7 @@ public class TreeviewService implements ITreeviewService {
     }
 
     @Override
-    public List<Treeview> GetHistoryComponentsFromMachine(String treeviewName, String dateTime) throws ParseException {
+    public List<Treeview> GetComponentHistoryFromMachine(String treeviewName, String dateTime) throws ParseException {
         MachineMonitoringPoorten machine = machineMonitoringPoortenService.GetByName(treeviewName);
 
         Set<ProductionData> allComponentsProductions = productionDataService

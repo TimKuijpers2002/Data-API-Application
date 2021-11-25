@@ -18,7 +18,8 @@ public class MachineMonitoringPoortenService {
     public List<MachineMonitoringPoorten> GetAllMachines(){
 
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenRepository.findAll();
-        allMachines.removeIf(item -> item.getName() == null);
+        allMachines.removeIf(item -> item.getName().equals(""));
+        allMachines.removeIf(item -> item.getName().equals("MMS"));
         return allMachines;
     }
 
