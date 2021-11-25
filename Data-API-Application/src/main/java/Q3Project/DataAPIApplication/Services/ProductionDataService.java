@@ -38,7 +38,7 @@ public class ProductionDataService {
             String test = (currentData.getStartDate() + 'T' + currentData.getStartTime());
             Date beginDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse((currentData.getStartDate() + 'T' + currentData.getStartTime()));
             Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse((currentData.getEndDate() + 'T' + currentData.getEndTime()));
-            if(beginDate.before(currentDate) && endDate.after(currentDate)){
+            if(!beginDate.after(currentDate) && !endDate.before(currentDate)){
                 allForCorrectDate.add(currentData);
             }
         }
