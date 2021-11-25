@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface TreeviewRepository extends JpaRepository<Treeview, Long> {
-    @Query(value="SELECT t FROM Treeview t WHERE t.name = :name")
-    Treeview findByName(@Param("name") String name);
+    @Query(value="SELECT t FROM Treeview t WHERE t.omschrijving = :omschrijving")
+    Treeview findByOmschrijving(@Param("omschrijving") String omschrijving);
 }

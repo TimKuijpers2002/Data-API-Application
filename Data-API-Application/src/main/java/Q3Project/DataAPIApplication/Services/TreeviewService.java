@@ -83,9 +83,9 @@ public class TreeviewService implements ITreeviewService {
     }
 
     @Override
-    public Set<Treeview> GetMachineHistoryByComponentName(String componentName)
+    public Set<Treeview> GetMachineHistoryByComponentName(String omschrijving)
     {
-        Treeview component = treeviewRepository.findByName(componentName);
+        Treeview component = treeviewRepository.findByOmschrijving(omschrijving);
         List<ProductionData> allProductionData = productionDataService.GetProductionDataFromComponent(component.getTreeviewid());
         Set<Treeview> machineHistory = new HashSet<>(treeviewRepository.findAllById(GetTreeviewsByName(allProductionData)));
         return machineHistory;
