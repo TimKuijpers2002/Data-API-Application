@@ -5,6 +5,7 @@ import Q3Project.DataAPIApplication.Model.Treeview;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public interface ITreeviewService {
 
@@ -14,4 +15,5 @@ public interface ITreeviewService {
     List<Treeview> GetAllComponents();
     List<Treeview> GetAllComponentsFromMachine(String treeviewName);
     List<Treeview> GetComponentHistoryFromMachine(String treeviewName, String dateTime) throws ParseException;
+    Set<Treeview> GetMachineHistoryByComponentName(String componentName);
 }

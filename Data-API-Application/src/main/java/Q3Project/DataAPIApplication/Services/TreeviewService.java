@@ -4,7 +4,9 @@ import Q3Project.DataAPIApplication.Interface.ITreeviewService;
 import Q3Project.DataAPIApplication.Model.MachineMonitoringPoorten;
 import Q3Project.DataAPIApplication.Model.ProductionData;
 import Q3Project.DataAPIApplication.Model.Treeview;
+import Q3Project.DataAPIApplication.Repository.ProductionDataRepository;
 import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
+import com.sun.source.tree.Tree;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -78,5 +80,14 @@ public class TreeviewService implements ITreeviewService {
         }
         allTreeviewIds.removeIf(item -> item == 0);
         return allTreeviewIds;
+    }
+
+    @Override
+    public Set<Treeview> GetMachineHistoryByComponentName(String componentName)
+    {
+        Treeview component = treeviewRepository.findByName(componentName);
+        List<ProductionData> allProductionData = productionDataService.GetProductionDataFromComponent(component.getTreeviewid());
+        Set<Treeview> machineHistory = new HashSet<>(treeviewRepository.findAllById(GetTreeviewsByName(allProductionData)));
+        return machineHistory;
     }
 }

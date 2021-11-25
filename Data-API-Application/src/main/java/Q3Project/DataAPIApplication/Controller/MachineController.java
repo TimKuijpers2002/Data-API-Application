@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
@@ -23,5 +24,10 @@ public class MachineController {
     @GetMapping("/machines")
     public List<Treeview> GetAllMachines(){
         return service.GetAllMachines();
+    }
+
+    @GetMapping("/machines/{name}")
+    public Set<Treeview> GetMachineHistoryFromComponent(@PathVariable(value = "name") String componentName) {
+        return service.GetMachineHistoryByComponentName(componentName);
     }
 }

@@ -26,4 +26,9 @@ public class MachineMonitoringPoortenService {
     public MachineMonitoringPoorten GetByName(String name){
         return machineMonitoringPoortenRepository.findByName(name);
     }
+
+    public MachineMonitoringPoorten GetByBoardAndPort(int board , int port)
+    {
+        return machineMonitoringPoortenRepository.findByBoardAndPort(board , port);
+    }
 }
