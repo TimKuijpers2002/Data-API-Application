@@ -37,8 +37,7 @@ public class ProductionDataService {
         for(ProductionData currentData : allForBoardAndPort){
             Date beginDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse((currentData.getStartDate() + 'T' + currentData.getStartTime()));
             Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse((currentData.getEndDate() + 'T' + currentData.getEndTime()));
-            if(beginDate.after(currentDate) || endDate.before(currentDate)){
-            }else{
+            if(!beginDate.after(currentDate) || !endDate.before(currentDate)){
                 allForCorrectDate.add(currentData);
             }
         }
