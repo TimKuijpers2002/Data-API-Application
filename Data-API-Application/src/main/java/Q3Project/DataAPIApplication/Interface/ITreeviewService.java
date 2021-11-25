@@ -13,5 +13,5 @@ public interface ITreeviewService {
     List<Treeview> GetAllFromMachines();
     List<Treeview> GetAllFromComponents();
     List<Treeview> GetAllComponentsFromMachine(String treeviewName);
-    List<Treeview> GetHistoryComponentsFromMachine(String treeviewName, String date, String time) throws ParseException;
+    List<Treeview> GetHistoryComponentsFromMachine(String treeviewName, String dateTime) throws ParseException;
 }

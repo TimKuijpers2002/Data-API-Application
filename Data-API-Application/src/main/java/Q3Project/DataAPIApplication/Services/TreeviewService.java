@@ -68,12 +68,12 @@ public class TreeviewService implements ITreeviewService {
     }
 
     @Override
-    public List<Treeview> GetHistoryComponentsFromMachine(String treeviewName, String date, String time) throws ParseException {
+    public List<Treeview> GetHistoryComponentsFromMachine(String treeviewName, String dateTime) throws ParseException {
         MachineMonitoringPoorten machine = machineMonitoringPoortenService.GetByName(treeviewName);
 
-        List<ProductionData> allComponentsProductions = productionDataService
-                .GetComponentsFromMachineOnDate(machine.getBoard(), machine.getPort(), date, time);
-        Set<Long> allComponents = GetTreeviewsByName(allComponentsProductions);
+        Set<ProductionData> allComponentsProductions = productionDataService
+                .GetComponentsFromMachineOnDate(machine.getBoard(), machine.getPort(), dateTime);
+        Set<Long> allComponents = GetTreeviewsByName(new ArrayList<>(allComponentsProductions));
         return treeviewRepository.findAllById(allComponents);
     }
 

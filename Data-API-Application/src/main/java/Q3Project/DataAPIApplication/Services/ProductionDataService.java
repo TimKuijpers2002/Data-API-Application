@@ -5,11 +5,12 @@ import Q3Project.DataAPIApplication.Repository.ProductionDataRepository;
 import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProductionDataService {
@@ -29,10 +30,18 @@ public class ProductionDataService {
         return allProductionData;
     }
 
-    public List<ProductionData> GetComponentsFromMachineOnDate(int board, int port, String date, String time) throws ParseException {
-        Date currentDay = new Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime());
-        Time currentTime = new Time(new SimpleDateFormat("HH:mm:ss").parse(time).getTime());
-
-        return productionDataRepository.findByBPAndDate(board, port, currentDay, currentTime);
+    public Set<ProductionData> GetComponentsFromMachineOnDate(int board, int port, String dateTime) throws ParseException {
+        Date currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse((dateTime));
+        List<ProductionData> allForBoardAndPort = productionDataRepository.findByBP(board, port);
+        Set<ProductionData> allForCorrectDate = new HashSet<>();
+        for(ProductionData currentData : allForBoardAndPort){
+            Date beginDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse((currentData.getStartDate() + 'T' + currentData.getStartTime()));
+            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse((currentData.getEndDate() + 'T' + currentData.getEndTime()));
+            if(beginDate.after(currentDate) || endDate.before(currentDate)){
+            }else{
+                allForCorrectDate.add(currentData);
+            }
+        }
+        return allForCorrectDate;
     }
 }
