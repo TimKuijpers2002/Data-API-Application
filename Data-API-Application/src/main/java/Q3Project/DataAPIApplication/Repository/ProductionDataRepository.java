@@ -13,4 +13,7 @@ public interface ProductionDataRepository extends JpaRepository<ProductionData, 
 
     @Query(value="SELECT p FROM ProductionData p WHERE p.board = :board AND p.port = :port")
     List<ProductionData> findByBP(@Param("board") int board, @Param("port") int port);
+
+    @Query(value ="SELECT p FROM ProductionData p WHERE p.treeviewId =: treeviewId OR p.treeview2Id =: treeviewId")
+    List<ProductionData> findByTreeviewId(@Param("treeviewId") Long treeviewId);
 }

@@ -44,4 +44,9 @@ public class ProductionDataService {
         }
         return allForCorrectDate;
     }
+
+    public List<ProductionData>GetBoardAndPortByTreeviewId(long id)
+    {
+        return productionDataRepository.findByTreeviewId(id);
+    }
 }
