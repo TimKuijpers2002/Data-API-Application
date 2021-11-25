@@ -26,8 +26,8 @@ public class MachineController {
         return service.GetAllMachines();
     }
 
-    @GetMapping("/machines/{omschrijving}")
-    public Set<Treeview> GetMachineHistoryFromComponent(@PathVariable(value = "omschrijving") String omschrijving) {
-        return service.GetMachineHistoryByComponentName(omschrijving);
+    @GetMapping("/machines/{name}")
+    public Set<Treeview> GetMachineHistoryFromComponent(@PathVariable(value = "name") String componentName) {
+        return service.GetMachineHistoryByComponentName(componentName);
     }
 }

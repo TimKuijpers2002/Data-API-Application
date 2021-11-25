@@ -26,7 +26,7 @@ public class ProductionDataService {
     public List<ProductionData> GetProductionDataFromComponent(long componentId)
     {
         List<ProductionData> allProductionData = productionDataRepository.findAll();
-        allProductionData.removeIf(item -> item.getTreeviewId() != componentId || item.getTreeview2Id() != componentId);
+        allProductionData.removeIf(item -> item.getTreeviewId() != componentId && item.getTreeview2Id() != componentId);
         return allProductionData;
     }
 

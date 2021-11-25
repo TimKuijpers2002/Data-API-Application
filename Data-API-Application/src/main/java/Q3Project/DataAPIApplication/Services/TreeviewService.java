@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.*;
+import java.util.function.Predicate;
 
 @Service
 public class TreeviewService implements ITreeviewService {
@@ -82,12 +83,26 @@ public class TreeviewService implements ITreeviewService {
         return allTreeviewIds;
     }
 
+    public List<MachineMonitoringPoorten> GetMachinesByComponentId(List<ProductionData> productionDataList){
+        List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
+        for(ProductionData currentData: productionDataList){
+            allMachines.removeIf(machine -> machine.getBoard() != currentData.getBoard() || machine.getPort() != currentData.getPort());
+        }
+        return allMachines;
+    }
+
     @Override
-    public Set<Treeview> GetMachineHistoryByComponentName(String omschrijving)
+    public Set<Treeview> GetMachineHistoryByComponentName(String componentName)
     {
-        Treeview component = treeviewRepository.findByOmschrijving(omschrijving);
+        Treeview component = treeviewRepository.findByName(componentName);
         List<ProductionData> allProductionData = productionDataService.GetProductionDataFromComponent(component.getTreeviewid());
-        Set<Treeview> machineHistory = new HashSet<>(treeviewRepository.findAllById(GetTreeviewsByName(allProductionData)));
-        return machineHistory;
+        List<MachineMonitoringPoorten> allMachines = GetMachinesByComponentId(allProductionData);
+        List<Treeview> allTreeview = GetAllMachines();
+        for (MachineMonitoringPoorten currentMachine: allMachines)
+        {
+            Predicate<Treeview> condition = treeview -> !treeview.getName().equals(currentMachine.getName());
+            allTreeview.removeIf(condition);
+        }
+        return new HashSet<>(allTreeview);
     }
 }
