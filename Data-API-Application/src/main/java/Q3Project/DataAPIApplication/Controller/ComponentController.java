@@ -28,7 +28,7 @@ public class ComponentController {
     }
 
     @GetMapping("/components/{name}")
-    public List<Treeview> GetHistoryComponentsFromMachine(@PathVariable(value = "name") String treeviewName){
+    public List<Treeview> GetComponentsFromMachine(@PathVariable(value = "name") String treeviewName){
         return service.GetAllComponentsFromMachine(treeviewName);
     }
 

@@ -35,9 +35,10 @@ public class ProductionDataService {
         List<ProductionData> allForBoardAndPort = productionDataRepository.findByBP(board, port);
         Set<ProductionData> allForCorrectDate = new HashSet<>();
         for(ProductionData currentData : allForBoardAndPort){
+            String test = (currentData.getStartDate() + 'T' + currentData.getStartTime());
             Date beginDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse((currentData.getStartDate() + 'T' + currentData.getStartTime()));
             Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse((currentData.getEndDate() + 'T' + currentData.getEndTime()));
-            if(!beginDate.after(currentDate) || !endDate.before(currentDate)){
+            if(beginDate.before(currentDate) && endDate.after(currentDate)){
                 allForCorrectDate.add(currentData);
             }
         }
