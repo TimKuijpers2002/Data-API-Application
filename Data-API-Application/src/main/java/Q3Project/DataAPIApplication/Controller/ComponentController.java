@@ -38,9 +38,8 @@ public class ComponentController {
     }
 
     //Without The s
-    @GetMapping("/component/{name}")
-    public int ComponentShotCount(@PathVariable(value = "name") String name)
-    {
+    @GetMapping("/componentshots/{name}")
+    public int ComponentShotCount(@PathVariable(value = "name") String name) throws ParseException {
         return service.ComponentTotalShotCount(name);
     }
 }

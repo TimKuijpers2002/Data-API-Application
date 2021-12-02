@@ -11,6 +11,7 @@ import Q3Project.DataAPIApplication.Repository.TreeviewRepository;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -79,14 +80,16 @@ public class TreeviewService implements ITreeviewService {
     }
 
     @Override
-    public int ComponentTotalShotCount(String name) {
+    public int ComponentTotalShotCount(String name) throws ParseException {
         List<MonitoringData202009> datalist = new ArrayList<>();
 
         var treeview = treeviewRepository.FindByName(name);
         var productionsdatas =productionDataService.GetBoardAndPortByTreeviewId(treeview.getTreeviewid());
         for(ProductionData data : productionsdatas)
         {
-            datalist = MonitoringDataRepository.FindByBoardAndPort(data.getBoard(),data.getPort());
+            Date beginDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(data.getStartDate() +'T'+ data.getStartTime());
+            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse((data.getEndDate() + 'T' + data.getEndTime()));
+            datalist.addAll(MonitoringDataRepository.FindByBoardAndPort(data.getBoard(),data.getPort(),beginDate, endDate));
         }
 
         return datalist.size();
