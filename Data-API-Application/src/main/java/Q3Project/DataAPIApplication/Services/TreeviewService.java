@@ -86,7 +86,7 @@ public class TreeviewService implements ITreeviewService {
     public List<MachineMonitoringPoorten> GetMachinesByComponentId(List<ProductionData> productionDataList){
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
         for(ProductionData currentData: productionDataList){
-            allMachines.removeIf(machine -> machine.getBoard() != currentData.getBoard() || machine.getPort() != currentData.getPort());
+            allMachines.removeIf(machine -> machine.getBoard() != currentData.getBoard() && machine.getPort() != currentData.getPort());
         }
         return allMachines;
     }
