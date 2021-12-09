@@ -32,4 +32,4 @@ jobs:
       run: chmod +x Data-API-Application/gradlew
       
     - name: Build with Gradle
-      run: Data-API-Application/./gradlew --debug
+      run: Data-API-Application/./gradlew build
