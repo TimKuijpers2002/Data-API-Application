@@ -70,7 +70,8 @@ public class TreeviewService implements ITreeviewService {
         MachineMonitoringPoorten machine = machineMonitoringPoortenService.GetByName(treeviewName);
         List<ProductionData> allComponentsProductions = productionDataService
                 .GetComponentsFromMachine(machine.getBoard(), machine.getPort());
-        return treeviewRepository.findAllById(GetTreeviewsByName(allComponentsProductions));
+        Set<Treeview> allComponents = new HashSet<>(treeviewRepository.findAllById(GetTreeviewsByName(allComponentsProductions)));
+        return new ArrayList<>(allComponents);
     }
 
     @Override
