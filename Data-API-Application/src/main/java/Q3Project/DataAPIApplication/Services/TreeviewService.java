@@ -43,10 +43,10 @@ public class TreeviewService implements ITreeviewService {
 
     @Override
     public List<Treeview> GetAllMachines() {
-        List<Treeview> allTreeviews = GetAll();
+        List<Treeview> allTreeviews = new ArrayList<>();
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
         for(MachineMonitoringPoorten machine: allMachines){
-            allTreeviews.removeIf(treeview -> treeview.getName().equals(machine.getName()));
+            allTreeviews.add(treeviewRepository.findByName(machine.getName()));
         }
         return allTreeviews;
     }
