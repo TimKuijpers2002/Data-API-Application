@@ -43,12 +43,17 @@ public class TreeviewService implements ITreeviewService {
 
     @Override
     public List<Treeview> GetAllMachines() {
-        List<Treeview> allTreeviews = new ArrayList<>();
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
-        for(MachineMonitoringPoorten machine: allMachines){
-            allTreeviews.add(treeviewRepository.findByName(machine.getName()));
+        List<Treeview> allTreeview = GetAll();
+        List<Treeview> allConfirmedMachines = new ArrayList<>();
+        for(MachineMonitoringPoorten currentMachine: allMachines){
+            for(Treeview treeview: allTreeview){
+                if(Objects.equals(treeview.getName(), currentMachine.getName())){
+                    allConfirmedMachines.add(treeview);
+                }
+            }
         }
-        return allTreeviews;
+        return allConfirmedMachines;
     }
 
     @Override
