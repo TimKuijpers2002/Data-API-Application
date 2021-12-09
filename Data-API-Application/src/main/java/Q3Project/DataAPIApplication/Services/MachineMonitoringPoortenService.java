@@ -18,7 +18,17 @@ public class MachineMonitoringPoortenService {
     public List<MachineMonitoringPoorten> GetAllMachines(){
 
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenRepository.findAll();
-        allMachines.removeIf(item -> item.getName() == null);
+        allMachines.removeIf(item -> item.getName().equals(""));
+        allMachines.removeIf(item -> item.getName().equals("MMS"));
         return allMachines;
+    }
+
+    public MachineMonitoringPoorten GetByName(String name){
+        return machineMonitoringPoortenRepository.findByName(name);
+    }
+
+    public MachineMonitoringPoorten GetByBoardAndPort(int board , int port)
+    {
+        return machineMonitoringPoortenRepository.findByBoardAndPort(board , port);
     }
 }

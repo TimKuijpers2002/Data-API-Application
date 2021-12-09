@@ -7,8 +7,9 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.sql.Time;
+import java.sql.Date;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -26,14 +27,19 @@ public class ProductionData {
     private int treeviewId;
     @Column(name = "treeview2_id")
     private int treeview2Id;
+
     @Column(name = "start_date")
     private String startDate;
+
     @Column(name = "start_time")
     private String startTime;
+
     @Column(name = "end_date")
     private String endDate;
+
     @Column(name = "end_time")
     private String endTime;
+
     @Column(name = "name")
     private String name;
 

@@ -3,6 +3,7 @@ package Q3Project.DataAPIApplication.Controller;
 import Q3Project.DataAPIApplication.Interface.IMonitoringDataService;
 import Q3Project.DataAPIApplication.Interface.ITreeviewService;
 import Q3Project.DataAPIApplication.Model.MonitoringData202009;
+import Q3Project.DataAPIApplication.Model.ReturnableMonitoringData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +18,19 @@ public class MonitoringDataController {
     @Autowired
     private IMonitoringDataService service;
 
-    @GetMapping("/monitoringdatas/{board}/{port}")
-    public List<MonitoringData202009> GetAllMonitoringData(@PathVariable(value = "board") int board, @PathVariable(value = "port") int port){
-        return service.GetAllFromMachine(board, port);
+    @GetMapping("/monitoringdatas/{name}")
+    public List<MonitoringData202009> GetAllMonitoringData(@PathVariable(value = "name") String name){
+        return service.GetAllFromMachine(name);
     }
 
-    @GetMapping("/monitoringdata/{board}/{port}/{datetime}")
-    public List<MonitoringData202009> GetAllMonitoringDataPerDay(@PathVariable(value = "board") int board, @PathVariable(value = "port") int port, @PathVariable(value = "datetime") String datetime) throws ParseException {
-        return service.GetAllFromMachinePerDay(board, port, datetime);
+    @GetMapping("/monitoringdata/{machinename}/{datetime}")
+    public List<MonitoringData202009> GetAllMonitoringDataPerDay(@PathVariable(value = "machinename") String machineName, @PathVariable(value = "datetime") String datetime) throws ParseException {
+        return service.GetAllFromMachinePerDay(machineName, datetime);
     }
+
+//    @GetMapping("/lastshot/{name}/{datetime}")
+//    public MonitoringData202009 GetLastShotTimeFromMachine(@PathVariable(value = "datetime")String dateTime, @PathVariable(value = "name")String name){
+//
+//    }
 
 }
