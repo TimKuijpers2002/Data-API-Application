@@ -97,11 +97,10 @@ public class TreeviewService implements ITreeviewService {
         Treeview component = treeviewRepository.findByName(componentName);
         List<ProductionData> allProductionData = productionDataService.GetProductionDataFromComponent(component.getTreeviewid());
         List<MachineMonitoringPoorten> allMachines = GetMachinesByComponentId(allProductionData);
-        List<Treeview> allTreeview = GetAllMachines();
+        List<Treeview> allTreeview = new ArrayList<>();
         for (MachineMonitoringPoorten currentMachine: allMachines)
         {
-            Predicate<Treeview> condition = treeview -> !treeview.getName().equals(currentMachine.getName());
-            allTreeview.removeIf(condition);
+            allTreeview.add(treeviewRepository.findByName(currentMachine.getName()));
         }
         return new HashSet<>(allTreeview);
     }
