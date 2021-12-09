@@ -31,9 +31,10 @@ public class ProductionDataService {
     }
 
     public Set<ProductionData> GetComponentsFromMachine(int board, int port) {
-        Set<ProductionData> allProductionData = new HashSet<>(productionDataRepository.findAll());
-        allProductionData.removeIf(item -> item.getBoard() != board && item.getPort() != port);
-        return allProductionData;
+        List<ProductionData> allProductionData = productionDataRepository.findAll();
+        allProductionData.removeIf(item -> item.getBoard() != board);
+        allProductionData.removeIf(item -> item.getPort() != port);
+        return new HashSet<>(allProductionData);
     }
 
     public Set<ProductionData> GetComponentsFromMachineOnDate(int board, int port, String dateTime) throws ParseException {
