@@ -68,9 +68,9 @@ public class TreeviewService implements ITreeviewService {
     @Override
     public List<Treeview> GetAllComponentsFromMachine(String treeviewName) {
         MachineMonitoringPoorten machine = machineMonitoringPoortenService.GetByName(treeviewName);
-        List<ProductionData> allComponentsProductions = productionDataService
+        Set<ProductionData> allComponentsProductions = productionDataService
                 .GetComponentsFromMachine(machine.getBoard(), machine.getPort());
-        Set<Treeview> allComponents = new HashSet<>(treeviewRepository.findAllById(GetTreeviewsByName(allComponentsProductions)));
+        Set<Treeview> allComponents = new HashSet<>(treeviewRepository.findAllById(GetTreeviewsByName(new ArrayList<>(allComponentsProductions))));
         return new ArrayList<>(allComponents);
     }
 

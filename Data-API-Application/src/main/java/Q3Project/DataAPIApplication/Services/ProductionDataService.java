@@ -30,8 +30,8 @@ public class ProductionDataService {
         return allProductionData;
     }
 
-    public List<ProductionData> GetComponentsFromMachine(int board, int port) {
-        List<ProductionData> allProductionData = productionDataRepository.findAll();
+    public Set<ProductionData> GetComponentsFromMachine(int board, int port) {
+        Set<ProductionData> allProductionData = new HashSet<>(productionDataRepository.findAll());
         allProductionData.removeIf(item -> item.getBoard() != board && item.getPort() != port);
         return allProductionData;
     }
