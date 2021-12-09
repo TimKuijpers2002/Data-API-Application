@@ -29,7 +29,7 @@ jobs:
       uses: gradle/wrapper-validation-action@v1
 
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: chmod +x Data-API-Application/gradlew
 
     - name: Build with Gradle
-      run: ./gradlew buil
+      run: Data-API-Application/gradlew
