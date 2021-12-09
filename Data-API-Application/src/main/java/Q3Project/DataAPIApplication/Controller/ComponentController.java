@@ -35,4 +35,10 @@ public class ComponentController {
     public List<Treeview> GetComponentHistoryFromMachine(@PathVariable(value = "name") String treeviewName, @PathVariable(value = "datetime") String dateTime) throws ParseException {
         return service.GetComponentHistoryFromMachine(treeviewName, dateTime);
     }
+
+    //Without The s
+    @GetMapping("/componentshots/{name}")
+    public int ComponentShotCount(@PathVariable(value = "name") String name) throws ParseException {
+        return service.ComponentTotalShotCount(name);
+    }
 }
