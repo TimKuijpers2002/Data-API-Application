@@ -28,4 +28,9 @@ public class MonitoringDataController {
         return service.GetAllFromMachinePerDay(machineName, datetime);
     }
 
+//    @GetMapping("/lastshot/{name}/{datetime}")
+//    public MonitoringData202009 GetLastShotTimeFromMachine(@PathVariable(value = "datetime")String dateTime, @PathVariable(value = "name")String name){
+//
+//    }
+
 }

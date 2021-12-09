@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -24,7 +23,7 @@ public class ComponentController {
 
     @GetMapping("/components")
     public List<Treeview> GetAllComponents(){
-        return service.GetAllFromComponents();
+        return service.GetAllComponents();
     }
 
     @GetMapping("/components/{name}")
@@ -33,8 +32,8 @@ public class ComponentController {
     }
 
     @GetMapping("/components/{name}/{datetime}")
-    public List<Treeview> GetHistoryComponentsFromMachine(@PathVariable(value = "name") String treeviewName, @PathVariable(value = "datetime") String dateTime) throws ParseException {
-        return service.GetHistoryComponentsFromMachine(treeviewName, dateTime);
+    public List<Treeview> GetComponentHistoryFromMachine(@PathVariable(value = "name") String treeviewName, @PathVariable(value = "datetime") String dateTime) throws ParseException {
+        return service.GetComponentHistoryFromMachine(treeviewName, dateTime);
     }
 
     //Without The s

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -30,19 +31,44 @@ public class MachineMonitoringService implements IMonitoringDataService {
 
     @Override
     public List<MonitoringData202009> GetAllFromMachinePerDay(String machineName, String datetime) throws ParseException {
-        long start1 = System.nanoTime();
-        Date beginDay = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(datetime);
-        Calendar c = Calendar.getInstance();
-        c.setTime(beginDay);
-        c.add(Calendar.DATE, 1);
-        Date endDay = c.getTime();
-        long end1 = System.nanoTime();
-        System.out.println("Elapsed Time in nano seconds: "+ (end1-start1));
-        return monitoringData202009Repository.findByNameAndDate(machineName, beginDay, endDay);
+        List<Date> beginEndDay = GetStartAndEndDay(datetime);
+        return monitoringData202009Repository.findByNameAndDate(machineName, beginEndDay.stream().findFirst().get(), beginEndDay.get(beginEndDay.size()-1));
     }
+
+    public List<MonitoringData202009> GetAllWhereShutdown(String name, String datetime) throws ParseException {
+        List<Date> beginEndDay = GetStartAndEndDay(datetime);
+        List<MonitoringData202009> machineActivity = monitoringData202009Repository.findShutdownsOnDayPerMachine(name, beginEndDay.stream().findFirst().get(), beginEndDay.get(beginEndDay.size()-1));
+        for(MonitoringData202009 currentdata : machineActivity){
+            MonitoringData202009 startAfter = monitoringData202009Repository.findStartsOnDayPerMachine(currentdata.getTimestamp());
+            if(startAfter != null){
+                machineActivity.add(startAfter);
+            }
+        }
+        return machineActivity;
+    }
+
+//    public MonitoringData202009 GetLastShotTime(String name, String datetime) throws ParseException {
+//        Date lastTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(datetime);
+//
+//    }
 
     @Override
     public List<MonitoringData202009> GetAllFromComponents(List<ProductionData> productionData) {
         return null;
+    }
+
+    public List<Date> GetStartAndEndDay(String datetime) throws ParseException {
+        List<Date> dayList = new ArrayList<>(2);
+        long start1 = System.nanoTime();
+        Date beginDay = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(datetime);
+        dayList.add(beginDay);
+        Calendar c = Calendar.getInstance();
+        c.setTime(beginDay);
+        c.add(Calendar.DATE, 1);
+        Date endDay = c.getTime();
+        dayList.add(endDay);
+        long end1 = System.nanoTime();
+        System.out.println("Elapsed Time in nano seconds: "+ (end1-start1));
+        return dayList;
     }
 }

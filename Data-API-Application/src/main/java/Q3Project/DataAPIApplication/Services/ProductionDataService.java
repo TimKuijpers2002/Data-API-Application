@@ -23,10 +23,16 @@ public class ProductionDataService {
         this.treeviewRepository = treeviewRepository;
     }
 
+    public List<ProductionData> GetProductionDataFromComponent(long componentId)
+    {
+        List<ProductionData> allProductionData = productionDataRepository.findAll();
+        allProductionData.removeIf(item -> item.getTreeviewId() != componentId && item.getTreeview2Id() != componentId);
+        return allProductionData;
+    }
+
     public List<ProductionData> GetComponentsFromMachine(int board, int port) {
         List<ProductionData> allProductionData = productionDataRepository.findAll();
-        allProductionData.removeIf(item -> item.getBoard() != board);
-        allProductionData.removeIf(item -> item.getPort() != port);
+        allProductionData.removeIf(item -> item.getBoard() != board && item.getPort() != port);
         return allProductionData;
     }
 
