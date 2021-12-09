@@ -12,6 +12,7 @@ import com.sun.source.tree.Tree;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -81,7 +82,7 @@ public class TreeviewService implements ITreeviewService {
     public int ComponentTotalShotCount(String name) throws ParseException {
         List<MonitoringData202009> datalist = new ArrayList<>();
 
-        var treeview = treeviewRepository.FindByName(name);
+        var treeview = treeviewRepository.findByName(name);
         var productionsdatas =productionDataService.GetBoardAndPortByTreeviewId(treeview.getTreeviewid());
         for(ProductionData data : productionsdatas)
         {
