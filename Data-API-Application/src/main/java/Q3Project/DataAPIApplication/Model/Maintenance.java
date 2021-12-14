@@ -28,6 +28,10 @@ public class Maintenance {
     @JoinColumn(updatable = false, insertable = false, name = "treeviewid")
     private Treeview treeviewId;
 
+    @ManyToOne
+    @JoinColumn(updatable = false, insertable = false, name = "MaintenaceType_Id")
+    private maintenancetypes maintenancetypes;
+
     @Column(name = "startdaytime")
     private Date startDayTime;
 
