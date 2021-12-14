@@ -38,20 +38,22 @@ public class TreeviewService implements ITreeviewService {
 
     @Override
     public List<Treeview> GetAllMachines() {
-        List<Treeview> allTreeviews = GetAll();
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
-        for(MachineMonitoringPoorten machine: allMachines){
-            allTreeviews.removeIf(treeview -> treeview.getName().equals(machine.getName()));
+        List<Treeview> allTreeview = GetAll();
+        List<Treeview> allConfirmedMachines = new ArrayList<>();
+        for(MachineMonitoringPoorten currentMachine: allMachines){
+            for(Treeview treeview: allTreeview){
+                if(Objects.equals(treeview.getName(), currentMachine.getName())){
+                    allConfirmedMachines.add(treeview);
+                }
+            }
         }
-        return allTreeviews;
+        return allConfirmedMachines;
     }
 
     @Override
     public List<Treeview> GetAllComponents() {
-        List<Treeview> allTreeviews = GetAll();
-        List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
-        for(MachineMonitoringPoorten machine: allMachines){
-            allTreeviews.removeIf(treeview -> treeview.getName().equals(machine.getName()));        }
+        List<Treeview> allTreeviews = treeviewRepository.findByTreeViewTypeId(2);
         return allTreeviews;
     }
 
@@ -86,7 +88,9 @@ public class TreeviewService implements ITreeviewService {
     public List<MachineMonitoringPoorten> GetMachinesByComponentId(List<ProductionData> productionDataList){
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
         for(ProductionData currentData: productionDataList){
-            allMachines.removeIf(machine -> machine.getBoard() != currentData.getBoard() && machine.getPort() != currentData.getPort());
+            allMachines.removeIf(machine -> machine.getBoard() != currentData.getBoard());
+            allMachines.removeIf(machine -> machine.getPort() != currentData.getPort());
+            allMachines.removeIf(machine -> machine.getName() == "Hastamat");
         }
         return allMachines;
     }
