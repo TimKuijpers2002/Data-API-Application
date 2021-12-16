@@ -85,14 +85,12 @@ public class TreeviewService implements ITreeviewService {
         return allTreeviewIds;
     }
 
-    public List<MachineMonitoringPoorten> GetMachinesByComponentId(List<ProductionData> productionDataList){
+    public MachineMonitoringPoorten GetMachinesByComponentId(ProductionData productionData){
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
-        for(ProductionData currentData: productionDataList){
-            allMachines.removeIf(machine -> machine.getBoard() != currentData.getBoard());
-            allMachines.removeIf(machine -> machine.getPort() != currentData.getPort());
-            allMachines.removeIf(machine -> machine.getName() == "Hastamat");
-        }
-        return allMachines;
+        allMachines.removeIf(item -> item.getBoard() != productionData.getBoard());
+        allMachines.removeIf(item -> item.getPort() != productionData.getPort());
+        allMachines.removeIf(item -> item.getName() == "Hastamat");
+        return allMachines.stream().findFirst().get();
     }
 
     @Override
@@ -100,9 +98,15 @@ public class TreeviewService implements ITreeviewService {
     {
         Treeview component = treeviewRepository.findByName(componentName);
         List<ProductionData> allProductionData = productionDataService.GetProductionDataFromComponent(component.getTreeviewid());
-        List<MachineMonitoringPoorten> allMachines = GetMachinesByComponentId(allProductionData);
+        List<MachineMonitoringPoorten> machinesFromComponent = new ArrayList<>();
+        for (ProductionData currentData: allProductionData) {
+            var machine = GetMachinesByComponentId(currentData);
+            if (machine != null) {
+                machinesFromComponent.add(machine);
+            }
+        }
         List<Treeview> allTreeview = new ArrayList<>();
-        for (MachineMonitoringPoorten currentMachine: allMachines)
+        for (MachineMonitoringPoorten currentMachine: machinesFromComponent)
         {
             allTreeview.add(treeviewRepository.findByName(currentMachine.getName()));
         }

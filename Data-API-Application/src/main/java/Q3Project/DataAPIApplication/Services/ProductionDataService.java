@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ProductionDataService {
@@ -26,8 +23,16 @@ public class ProductionDataService {
     public List<ProductionData> GetProductionDataFromComponent(long componentId)
     {
         List<ProductionData> allProductionData = productionDataRepository.findAll();
-        allProductionData.removeIf(item -> item.getTreeviewId() != componentId && item.getTreeview2Id() != componentId);
-        return allProductionData;
+        List<ProductionData> correctProductionData = new ArrayList<>();
+        for (ProductionData currentData: allProductionData){
+            if (currentData.getTreeviewId() == componentId || currentData.getTreeview2Id() == componentId)
+            {
+                correctProductionData.add(currentData);
+            }
+        }
+        /*allProductionData.removeIf(item -> item.getTreeviewId() != componentId );
+        allProductionData.removeIf(item -> item.getTreeview2Id() != componentId);*/
+        return correctProductionData;
     }
 
     public List<ProductionData> GetComponentsFromMachine(int board, int port) {
