@@ -15,7 +15,7 @@ public interface TreeviewRepository extends JpaRepository<Treeview, Long> {
     @Query(value="SELECT t FROM Treeview t WHERE t.name = :componentName")
     Treeview findByName(@Param("componentName") String componentName);
 
-    @Query(value="SELECT t FROM Treeview t WHERE t.treeviewTypeId = :treeviewtypeId")
-    List<Treeview> findByTreeViewTypeId(@Param("treeviewtypeId") int treeviewtypeId);
+    @Query(value="SELECT t FROM Treeview t WHERE t.treeviewSoortId = :treeviewSoortId")
+    List<Treeview> findByTreeViewTypeId(@Param("treeviewSoortId") int treeviewSoortId);
 }
 
