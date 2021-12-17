@@ -35,10 +35,11 @@ public class ProductionDataService {
         return correctProductionData;
     }
 
-    public List<ProductionData> GetComponentsFromMachine(int board, int port) {
+    public Set<ProductionData> GetComponentsFromMachine(int board, int port) {
         List<ProductionData> allProductionData = productionDataRepository.findAll();
-        allProductionData.removeIf(item -> item.getBoard() != board && item.getPort() != port);
-        return allProductionData;
+        allProductionData.removeIf(item -> item.getBoard() != board);
+        allProductionData.removeIf(item -> item.getPort() != port);
+        return new HashSet<>(allProductionData);
     }
 
     public Set<ProductionData> GetComponentsFromMachineOnDate(int board, int port, String dateTime) throws ParseException {
@@ -54,5 +55,10 @@ public class ProductionDataService {
             }
         }
         return allForCorrectDate;
+    }
+
+    public List<ProductionData>GetBoardAndPortByTreeviewId(long treeviewid)
+    {
+        return productionDataRepository.findByTreeviewId((int)treeviewid);
     }
 }
