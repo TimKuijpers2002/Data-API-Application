@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class MachineMonitoringService implements IMonitoringDataService {
@@ -35,16 +36,24 @@ public class MachineMonitoringService implements IMonitoringDataService {
         return monitoringData202009Repository.findByNameAndDate(machineName, beginEndDay.stream().findFirst().get(), beginEndDay.get(beginEndDay.size()-1));
     }
 
-    public List<MonitoringData202009> GetAllWhereShutdown(String name, String datetime) throws ParseException {
+    public List<MonitoringData202009> GetAllUpAndDownTimes(String name, String datetime) throws ParseException {
         List<Date> beginEndDay = GetStartAndEndDay(datetime);
-        List<MonitoringData202009> machineActivity = monitoringData202009Repository.findShutdownsOnDayPerMachine(name, beginEndDay.stream().findFirst().get(), beginEndDay.get(beginEndDay.size()-1));
-        for(MonitoringData202009 currentdata : machineActivity){
-            MonitoringData202009 startAfter = monitoringData202009Repository.findStartsOnDayPerMachine(currentdata.getTimestamp());
-            if(startAfter != null){
-                machineActivity.add(startAfter);
+        List<MonitoringData202009> UpAndDownTimes = new ArrayList<>();
+        List<MonitoringData202009> machineActivityOnDay = monitoringData202009Repository.findByNameAndDate(name, beginEndDay.get(0), beginEndDay.get(beginEndDay.size()-1));
+        for(int i = 0; i < machineActivityOnDay.size(); i++){
+            if(i != 0) {
+                var current = machineActivityOnDay.get(i);
+                var previous = machineActivityOnDay.get(i-1);
+
+                long diffInMillies = Math.abs(current.getTimestamp().getTime() - previous.getTimestamp().getTime());
+                long diffInSeconds = TimeUnit.SECONDS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+                if(diffInSeconds >= (previous.getShotTime() * 6)) {
+                    UpAndDownTimes.add(previous);
+                    UpAndDownTimes.add(current);
+                }
             }
         }
-        return machineActivity;
+        return UpAndDownTimes;
     }
 
 //    public MonitoringData202009 GetLastShotTime(String name, String datetime) throws ParseException {

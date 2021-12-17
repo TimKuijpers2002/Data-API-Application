@@ -43,29 +43,32 @@ public class TreeviewService implements ITreeviewService {
 
     @Override
     public List<Treeview> GetAllMachines() {
-        List<Treeview> allTreeviews = GetAll();
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
-        for(MachineMonitoringPoorten machine: allMachines){
-            allTreeviews.removeIf(treeview -> treeview.getName().equals(machine.getName()));
+        List<Treeview> allTreeview = GetAll();
+        List<Treeview> allConfirmedMachines = new ArrayList<>();
+        for(MachineMonitoringPoorten currentMachine: allMachines){
+            for(Treeview treeview: allTreeview){
+                if(Objects.equals(treeview.getName(), currentMachine.getName())){
+                    allConfirmedMachines.add(treeview);
+                }
+            }
         }
-        return allTreeviews;
+        return allConfirmedMachines;
     }
 
     @Override
     public List<Treeview> GetAllComponents() {
-        List<Treeview> allTreeviews = GetAll();
-        List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
-        for(MachineMonitoringPoorten machine: allMachines){
-            allTreeviews.removeIf(treeview -> treeview.getName().equals(machine.getName()));        }
+        List<Treeview> allTreeviews = treeviewRepository.findByTreeViewTypeId(2);
         return allTreeviews;
     }
 
     @Override
     public List<Treeview> GetAllComponentsFromMachine(String treeviewName) {
         MachineMonitoringPoorten machine = machineMonitoringPoortenService.GetByName(treeviewName);
-        List<ProductionData> allComponentsProductions = productionDataService
+        Set<ProductionData> allComponentsProductions = productionDataService
                 .GetComponentsFromMachine(machine.getBoard(), machine.getPort());
-        return treeviewRepository.findAllById(GetTreeviewsByName(allComponentsProductions));
+        Set<Treeview> allComponents = new HashSet<>(treeviewRepository.findAllById(GetTreeviewsByName(new ArrayList<>(allComponentsProductions))));
+        return new ArrayList<>(allComponents);
     }
 
     @Override
@@ -104,12 +107,12 @@ public class TreeviewService implements ITreeviewService {
         return allTreeviewIds;
     }
 
-    public List<MachineMonitoringPoorten> GetMachinesByComponentId(List<ProductionData> productionDataList){
+    public MachineMonitoringPoorten GetMachinesByComponentId(ProductionData productionData){
         List<MachineMonitoringPoorten> allMachines = machineMonitoringPoortenService.GetAllMachines();
-        for(ProductionData currentData: productionDataList){
-            allMachines.removeIf(machine -> machine.getBoard() != currentData.getBoard() || machine.getPort() != currentData.getPort());
-        }
-        return allMachines;
+        allMachines.removeIf(item -> item.getBoard() != productionData.getBoard());
+        allMachines.removeIf(item -> item.getPort() != productionData.getPort());
+        allMachines.removeIf(item -> item.getName() == "Hastamat");
+        return allMachines.stream().findFirst().get();
     }
 
     @Override
@@ -117,12 +120,17 @@ public class TreeviewService implements ITreeviewService {
     {
         Treeview component = treeviewRepository.findByName(componentName);
         List<ProductionData> allProductionData = productionDataService.GetProductionDataFromComponent(component.getTreeviewid());
-        List<MachineMonitoringPoorten> allMachines = GetMachinesByComponentId(allProductionData);
-        List<Treeview> allTreeview = GetAllMachines();
-        for (MachineMonitoringPoorten currentMachine: allMachines)
+        List<MachineMonitoringPoorten> machinesFromComponent = new ArrayList<>();
+        for (ProductionData currentData: allProductionData) {
+            var machine = GetMachinesByComponentId(currentData);
+            if (machine != null) {
+                machinesFromComponent.add(machine);
+            }
+        }
+        List<Treeview> allTreeview = new ArrayList<>();
+        for (MachineMonitoringPoorten currentMachine: machinesFromComponent)
         {
-            Predicate<Treeview> condition = treeview -> !treeview.getName().equals(currentMachine.getName());
-            allTreeview.removeIf(condition);
+            allTreeview.add(treeviewRepository.findByName(currentMachine.getName()));
         }
         return new HashSet<>(allTreeview);
     }

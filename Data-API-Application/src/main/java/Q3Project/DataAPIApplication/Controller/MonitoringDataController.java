@@ -28,9 +28,9 @@ public class MonitoringDataController {
         return service.GetAllFromMachinePerDay(machineName, datetime);
     }
 
-//    @GetMapping("/lastshot/{name}/{datetime}")
-//    public MonitoringData202009 GetLastShotTimeFromMachine(@PathVariable(value = "datetime")String dateTime, @PathVariable(value = "name")String name){
-//
-//    }
+    @GetMapping("/machinestate/{name}/{datetime}")
+    public List<MonitoringData202009> GetAllUpAndDownTimes(@PathVariable(value = "datetime")String dateTime, @PathVariable(value = "name")String name) throws ParseException {
+        return service.GetAllUpAndDownTimes(name, dateTime);
+    }
 
 }
