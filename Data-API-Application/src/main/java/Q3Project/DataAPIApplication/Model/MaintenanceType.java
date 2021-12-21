@@ -7,8 +7,6 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.time.Duration;
-import java.util.Date;
 import java.util.Objects;
 
 @Getter
@@ -16,34 +14,22 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "maintenance")
-public class Maintenance {
+@Table(name = "maintenancetypes")
+public class MaintenanceType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    private long id;
-
-    @OneToOne()
-    @JoinColumn(updatable = false, insertable = false, name = "treeviewid")
-    private Treeview treeview;
-
-    @ManyToOne()
-    @JoinColumn(updatable = false, insertable = false, name = "Id")
-    private MaintenanceType maintenanceType;
-
-    @Column(name = "dayofrequest")
-    private Date dayOfRequest;
-
-    @Column(name = "dayofmaintenance")
-    private Date dayOfMaintenance;
+    private int id;
+    @Column(name = "TypeMaintence")
+    private String typeMaintenance;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Maintenance maintenance = (Maintenance) o;
-        return Objects.equals(id, maintenance.id);
+        MaintenanceType maintenanceType = (MaintenanceType) o;
+        return Objects.equals(id, maintenanceType.id);
     }
 
     @Override
