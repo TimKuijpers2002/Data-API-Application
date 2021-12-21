@@ -7,7 +7,6 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.time.Duration;
 import java.util.Date;
 import java.util.Objects;
 
