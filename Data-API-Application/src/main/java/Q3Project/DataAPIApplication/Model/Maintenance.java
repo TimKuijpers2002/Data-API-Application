@@ -23,13 +23,11 @@ public class Maintenance {
     @Column(name = "Id")
     private long id;
 
-    @OneToOne()
     @JoinColumn(updatable = false, insertable = false, name = "treeviewid")
-    private Treeview treeview;
+    private long treeviewId;
 
-    @ManyToOne()
     @JoinColumn(updatable = false, insertable = false, name = "Id")
-    private MaintenanceType maintenanceType;
+    private int maintenanceTypeId;
 
     @Column(name = "dayofrequest")
     private Date dayOfRequest;
