@@ -82,19 +82,48 @@ public class TreeviewService implements ITreeviewService {
     }
 
     @Override
-    public int ComponentTotalShotCount(String name) throws ParseException {
+    public List<Integer> ComponentTotalShotCount(String name, Date date) throws ParseException {
         List<MonitoringData202009> datalist = new ArrayList<>();
+        List<Integer> shotsPerWeek = new ArrayList<>();
+        List<Date> weeks = new ArrayList<>();
+        weeks.add(date);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, -7);
+        weeks.add(cal.getTime());
+        //Date firstweek = cal.getTime();
+        cal.add(Calendar.DATE, -7);
+        weeks.add(cal.getTime());
+        //Date secondweek = cal.getTime();
+        cal.add(Calendar.DATE, -7);
+        weeks.add(cal.getTime());
+        Date thirthweek = cal.getTime();
 
         var treeview = treeviewRepository.findByName(name);
         var productionsdatas =productionDataService.GetBoardAndPortByTreeviewId(treeview.getTreeviewid());
         for(ProductionData data : productionsdatas)
         {
             Date beginDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(data.getStartDate() +'T'+ data.getStartTime());
-            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse((data.getEndDate() + 'T' + data.getEndTime()));
-            datalist.addAll(MonitoringDataRepository.FindByBoardAndPort(data.getBoard(),data.getPort(),beginDate, endDate));
+            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(data.getEndDate() + 'T' + data.getEndTime());
+            if (beginDate.before(date) && endDate.after(thirthweek)) {
+                datalist.addAll(MonitoringDataRepository.FindByBoardAndPort(data.getBoard(), data.getPort(), beginDate, endDate));
+            }
+            else if (beginDate.after(date))
+            {
+                datalist.addAll(MonitoringDataRepository.FindByBoardAndPort(data.getBoard(), data.getPort(), date, endDate));
+            }
+            else if (endDate.before(thirthweek)) {
+                datalist.addAll(MonitoringDataRepository.FindByBoardAndPort(data.getBoard(), data.getPort(), date, endDate));
+            }
         }
-
-        return datalist.size();
+        for (var i = 0; i < 3; i++)
+        {
+            var x = i;
+            datalist.removeIf(item -> item.getTimestamp().before(weeks.get(x)));
+            datalist.removeIf(item -> item.getTimestamp().after(weeks.get(x+1)));
+            shotsPerWeek.add(datalist.size());
+        }
+        return shotsPerWeek;
     }
 
     public Set<Long> GetTreeviewsByName(List<ProductionData> productionDataList){

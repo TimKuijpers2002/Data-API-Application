@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -37,8 +38,8 @@ public class ComponentController {
     }
 
     //Without The s
-    @GetMapping("/componentshots/{name}")
-    public int ComponentShotCount(@PathVariable(value = "name") String name) throws ParseException {
-        return service.ComponentTotalShotCount(name);
+    @GetMapping("/componentshots/{name}/{date}")
+    public List<Integer> ComponentShotCount(@PathVariable(value = "name") String name, @PathVariable(value = "date")Date date) throws ParseException {
+        return service.ComponentTotalShotCount(name, date);
     }
 }
