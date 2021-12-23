@@ -13,4 +13,5 @@ public interface IMonitoringDataService {
     List<MonitoringData202009> GetAllFromMachinePerDay(String machineName, String datetime) throws ParseException;
     List<MonitoringData202009> GetAllFromComponents(List<ProductionData> productionData);
     List<MonitoringData202009> GetAllUpAndDownTimes(String name, String datetime) throws ParseException;
+    boolean CheckCurrentMachineState(String name, String timestamp) throws ParseException;
 }

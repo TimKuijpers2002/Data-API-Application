@@ -1,9 +1,7 @@
 package Q3Project.DataAPIApplication.Controller;
 
 import Q3Project.DataAPIApplication.Interface.IMonitoringDataService;
-import Q3Project.DataAPIApplication.Interface.ITreeviewService;
 import Q3Project.DataAPIApplication.Model.MonitoringData202009;
-import Q3Project.DataAPIApplication.Model.ReturnableMonitoringData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +26,13 @@ public class MonitoringDataController {
         return service.GetAllFromMachinePerDay(machineName, datetime);
     }
 
-    @GetMapping("/machinestate/{name}/{datetime}")
+    @GetMapping("/machinestatebar/{name}/{datetime}")
     public List<MonitoringData202009> GetAllUpAndDownTimes(@PathVariable(value = "datetime")String dateTime, @PathVariable(value = "name")String name) throws ParseException {
         return service.GetAllUpAndDownTimes(name, dateTime);
     }
 
+    @GetMapping("/machinestate/{name}/{datetime}")
+    public boolean GetMachineStateOnTimestamp(@PathVariable(value = "datetime")String dateTime, @PathVariable(value = "name")String name) throws ParseException {
+        return service.CheckCurrentMachineState(name, dateTime);
+    }
 }
