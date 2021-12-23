@@ -23,10 +23,10 @@ public class Maintenance {
     @Column(name = "Id")
     private long id;
 
-    @JoinColumn(updatable = false, insertable = false, name = "treeviewid")
+    @Column(name = "treeviewid")
     private long treeviewId;
 
-    @JoinColumn(updatable = false, insertable = false, name = "Id")
+    @Column(name = "maintenacetype_id")
     private int maintenanceTypeId;
 
     @Column(name = "dayofrequest")
