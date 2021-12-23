@@ -115,10 +115,6 @@ public class Treeview {
     @Column(name = "toegang_type_id")
     private Integer toegangTypeId;
 
-    @JoinColumn(name="treeviewid", nullable=false)
-    @OneToMany
-    private Set<Maintenance> maintenances;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

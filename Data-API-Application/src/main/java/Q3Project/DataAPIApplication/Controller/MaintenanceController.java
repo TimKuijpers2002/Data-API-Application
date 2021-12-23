@@ -59,7 +59,7 @@ public class MaintenanceController {
                 .orElseThrow(() -> new ResourceNotFoundException("ERROR 404 \n Employee could not be found for id:" + maintenance_id));
         boolean hasError = service.Update(maintenance, maintenanceDetails);
         if(hasError){
-            return ResponseEntity.badRequest().body("Maintenance already planned for date/time:" + maintenanceDetails.getDayOfMaintenance() + "for:" + maintenanceDetails.getMaintenanceType());
+            return ResponseEntity.badRequest().body("Maintenance already planned for date/time:" + maintenanceDetails.getDayOfMaintenance() + "for:" + maintenanceDetails.getMaintenanceTypeId());
         }
         return ResponseEntity.ok().body(maintenance);
     }
