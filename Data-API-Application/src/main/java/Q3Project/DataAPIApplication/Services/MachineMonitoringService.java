@@ -4,6 +4,8 @@ import Q3Project.DataAPIApplication.Interface.IMonitoringDataService;
 import Q3Project.DataAPIApplication.Model.*;
 import Q3Project.DataAPIApplication.Repository.MachineMonitoringPoortenRepository;
 import Q3Project.DataAPIApplication.Repository.MonitoringData202009Repository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -18,11 +20,9 @@ import java.util.concurrent.TimeUnit;
 public class MachineMonitoringService implements IMonitoringDataService {
 
     private final MonitoringData202009Repository monitoringData202009Repository;
-    private final MachineMonitoringPoortenRepository machineMonitoringPoortenRepository;
 
     public MachineMonitoringService(MonitoringData202009Repository monitoringData202009Repository, MachineMonitoringPoortenRepository machineMonitoringPoortenRepository) {
         this.monitoringData202009Repository = monitoringData202009Repository;
-        this.machineMonitoringPoortenRepository = machineMonitoringPoortenRepository;
     }
 
     @Override
@@ -36,6 +36,7 @@ public class MachineMonitoringService implements IMonitoringDataService {
         return monitoringData202009Repository.findByNameAndDate(machineName, beginEndDay.stream().findFirst().get(), beginEndDay.get(beginEndDay.size()-1));
     }
 
+    @Override
     public List<MonitoringData202009> GetAllUpAndDownTimes(String name, String datetime) throws ParseException {
         List<Date> beginEndDay = GetStartAndEndDay(datetime);
         List<MonitoringData202009> UpAndDownTimes = new ArrayList<>();
@@ -54,6 +55,19 @@ public class MachineMonitoringService implements IMonitoringDataService {
             }
         }
         return UpAndDownTimes;
+    }
+
+    @Override
+    public boolean CheckCurrentMachineState(String name, String timestamp) throws ParseException {
+        Date givenTimestamp = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(timestamp);
+        Pageable paging = PageRequest.of(0, 1);
+        MonitoringData202009 lastShotBeforeTimestamp = monitoringData202009Repository.findShotBeforeTimestamp(name, givenTimestamp, paging).stream().findFirst().get();
+
+        long maxDuration = (long) (lastShotBeforeTimestamp.getShotTime() * 6);
+        long diffInMillies = Math.abs(givenTimestamp.getTime() - lastShotBeforeTimestamp.getTimestamp().getTime());
+        long diff = TimeUnit.SECONDS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+        return diff < maxDuration;
     }
 
 //    public MonitoringData202009 GetLastShotTime(String name, String datetime) throws ParseException {
