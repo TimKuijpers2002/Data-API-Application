@@ -4,7 +4,7 @@
 
 ### Run Application
 
-- The application can be run using docker you only need to add a dockerfile and create a docker image
+- The application can run using docker you only need to add a dockerfile and create a docker image
 > **Docker can be installed before trying to run the application**
 
 ### Development:
