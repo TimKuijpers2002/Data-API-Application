@@ -67,7 +67,7 @@ public class MaintenanceController {
             return ResponseEntity.badRequest().body("Maintenance already planned for date/time:" + maintenanceDetails.getDayOfMaintenance() + "for:" + maintenanceDetails.getMaintenanceTypeId());
         }
         return ResponseEntity.ok().body(maintenance);
-    }
+    }*/
 
     @Transactional
     @DeleteMapping("/maintenance/{id}")
