@@ -4,9 +4,8 @@
 
 ### Run Application
 
-- The entire application is setup to run using Docker images this means that if you want to run the product, the platform of the product should not change and break the code.
-
-> **Docker should be installed before trying to run the application**
+- The application can be run using docker you only need to add a dockerfile and create a docker image
+> **Docker can be installed before trying to run the application**
 
 ### Development:
 
