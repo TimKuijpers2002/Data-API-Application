@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class MaintenanceController {
     @Autowired
     private IMaintenancePlanner service;
 
+    @Transactional
     @GetMapping("/maintenance/{id}")
     public ResponseEntity<?> GetMaintenanceById(@PathVariable(value = "id") long maintenance_id) throws ResourceNotFoundException {
         Maintenance maintenance = maintenanceRepository.findById(maintenance_id)
@@ -32,6 +34,7 @@ public class MaintenanceController {
         return ResponseEntity.ok().body(maintenance);
     }
 
+    @Transactional
     @GetMapping("/maintenance")
     public ResponseEntity<List<Maintenance>> GetAllMaintenances() {
         try {
@@ -43,6 +46,7 @@ public class MaintenanceController {
         }
     }
 
+    @Transactional
     @PostMapping("/maintenance")
     public ResponseEntity<?> CreateMaintenance(@RequestBody Maintenance maintenance) {
         boolean hasError = service.Create(maintenance);
@@ -53,6 +57,7 @@ public class MaintenanceController {
         }
     }
 
+    @Transactional
     @PutMapping("/maintenance/{id}")
     public ResponseEntity<?> UpdateMaintenance(@RequestBody Maintenance maintenanceDetails, @PathVariable(value = "id") long maintenance_id) throws Exception {
         Maintenance maintenance = maintenanceRepository.findById(maintenance_id)
@@ -64,6 +69,7 @@ public class MaintenanceController {
         return ResponseEntity.ok().body(maintenance);
     }
 
+    @Transactional
     @DeleteMapping("/maintenance/{id}")
     public ResponseEntity<?> DeleteMaintenance(@PathVariable("id") long maintenance_id) throws ResourceNotFoundException{
         maintenanceRepository.findById(maintenance_id)
