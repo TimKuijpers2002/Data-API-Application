@@ -3,6 +3,7 @@ package Q3Project.DataAPIApplication.Controller;
 import Q3Project.DataAPIApplication.Interface.ITreeviewService;
 import Q3Project.DataAPIApplication.Model.Treeview;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -16,27 +17,31 @@ public class ComponentController {
     @Autowired
     private ITreeviewService service;
 
+    @Transactional
     @GetMapping("/component/{id}")
     public Treeview GetComponentById(@PathVariable(value = "id") long treeviewId){
         return service.GetByTreeviewId(treeviewId);
     }
 
+    @Transactional
     @GetMapping("/components")
     public List<Treeview> GetAllComponents(){
         return service.GetAllComponents();
     }
 
+    @Transactional
     @GetMapping("/components/{name}")
     public List<Treeview> GetComponentsFromMachine(@PathVariable(value = "name") String treeviewName){
         return service.GetAllComponentsFromMachine(treeviewName);
     }
 
+    @Transactional
     @GetMapping("/components/{name}/{datetime}")
     public List<Treeview> GetComponentHistoryFromMachine(@PathVariable(value = "name") String treeviewName, @PathVariable(value = "datetime") String dateTime) throws ParseException {
         return service.GetComponentHistoryFromMachine(treeviewName, dateTime);
     }
 
-    //Without The s
+    @Transactional
     @GetMapping("/componentshots/{name}")
     public int ComponentShotCount(@PathVariable(value = "name") String name) throws ParseException {
         return service.ComponentTotalShotCount(name);

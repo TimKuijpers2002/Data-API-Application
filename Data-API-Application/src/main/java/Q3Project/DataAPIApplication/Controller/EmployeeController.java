@@ -8,6 +8,7 @@ import Q3Project.DataAPIApplication.CustomException.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class EmployeeController {
     @Autowired
     private IEmployeeService service;
 
+    @Transactional
     @GetMapping("/employees/{id}")
     public ResponseEntity<?> GetEmployeeById(@PathVariable(value = "id") long employee_id) throws ResourceNotFoundException {
         Employee employee = employeeRepository.findById(employee_id)
@@ -32,6 +34,7 @@ public class EmployeeController {
         return ResponseEntity.ok().body(employee);
     }
 
+    @Transactional
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> GetAllEmployee() {
         try {
@@ -43,6 +46,7 @@ public class EmployeeController {
         }
     }
 
+    @Transactional
     @PostMapping("/employees")
     public ResponseEntity<?> CreateEmployee(@RequestBody Employee employee) {
         boolean hasError = service.Create(employee);
@@ -53,6 +57,7 @@ public class EmployeeController {
         }
     }
 
+    @Transactional
     @PutMapping("/employees/{id}")
     public ResponseEntity<?> UpdateEmployee(@RequestBody Employee employeeDetails, @PathVariable(value = "id") long employee_id) throws Exception {
         Employee employee = employeeRepository.findById(employee_id)
@@ -64,6 +69,7 @@ public class EmployeeController {
         return ResponseEntity.ok().body(employee);
     }
 
+    @Transactional
     @DeleteMapping("/employees/{id}")
     public ResponseEntity<?> DeleteEmployee(@PathVariable("id") long employee_id) throws ResourceNotFoundException{
         employeeRepository.findById(employee_id)
