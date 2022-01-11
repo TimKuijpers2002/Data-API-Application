@@ -53,7 +53,7 @@ public class MaintenanceController {
         }
     }
 
-    @PutMapping("/maintenance/{id}")
+    /*@PutMapping("/maintenance/{id}")
     public ResponseEntity<?> UpdateMaintenance(@RequestBody Maintenance maintenanceDetails, @PathVariable(value = "id") long maintenance_id) throws Exception {
         Maintenance maintenance = maintenanceRepository.findById(maintenance_id)
                 .orElseThrow(() -> new ResourceNotFoundException("ERROR 404 \n Employee could not be found for id:" + maintenance_id));
@@ -62,7 +62,7 @@ public class MaintenanceController {
             return ResponseEntity.badRequest().body("Maintenance already planned for date/time:" + maintenanceDetails.getDayOfMaintenance() + "for:" + maintenanceDetails.getMaintenanceTypeId());
         }
         return ResponseEntity.ok().body(maintenance);
-    }
+    }*/
 
     @DeleteMapping("/maintenance/{id}")
     public ResponseEntity<?> DeleteMaintenance(@PathVariable("id") long maintenance_id) throws ResourceNotFoundException{

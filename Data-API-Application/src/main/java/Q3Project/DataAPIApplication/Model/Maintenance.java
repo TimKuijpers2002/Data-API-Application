@@ -23,14 +23,11 @@ public class Maintenance {
     @Column(name = "Id")
     private long id;
 
-    @Column(name = "treeviewid")
-    private long treeviewId;
+    @Column(name = "componentname")
+    private String componentName;
 
-    @Column(name = "maintenacetype_id")
-    private int maintenanceTypeId;
-
-    @Column(name = "dayofrequest")
-    private Date dayOfRequest;
+    @Column(name = "maintenacetype")
+    private String maintenanceType;
 
     @Column(name = "dayofmaintenance")
     private Date dayOfMaintenance;
