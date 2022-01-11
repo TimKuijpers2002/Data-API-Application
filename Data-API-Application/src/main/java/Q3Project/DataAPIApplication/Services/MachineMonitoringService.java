@@ -4,6 +4,7 @@ import Q3Project.DataAPIApplication.Interface.IMonitoringDataService;
 import Q3Project.DataAPIApplication.Model.*;
 import Q3Project.DataAPIApplication.Repository.MachineMonitoringPoortenRepository;
 import Q3Project.DataAPIApplication.Repository.MonitoringData202009Repository;
+import Q3Project.DataAPIApplication.Repository.ProductionDataRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,13 @@ import java.util.concurrent.TimeUnit;
 public class MachineMonitoringService implements IMonitoringDataService {
 
     private final MonitoringData202009Repository monitoringData202009Repository;
+    private final ProductionDataRepository productionDataRepository;
+    private final MachineMonitoringPoortenRepository machineMonitoringPoortenRepository;
 
-    public MachineMonitoringService(MonitoringData202009Repository monitoringData202009Repository, MachineMonitoringPoortenRepository machineMonitoringPoortenRepository) {
+    public MachineMonitoringService(MonitoringData202009Repository monitoringData202009Repository, MachineMonitoringPoortenRepository machineMonitoringPoortenRepository, ProductionDataRepository productionDataRepository, MachineMonitoringPoortenRepository machineMonitoringPoortenRepository1) {
         this.monitoringData202009Repository = monitoringData202009Repository;
+        this.productionDataRepository = productionDataRepository;
+        this.machineMonitoringPoortenRepository = machineMonitoringPoortenRepository1;
     }
 
     @Override
@@ -60,11 +65,21 @@ public class MachineMonitoringService implements IMonitoringDataService {
     @Override
     public boolean CheckCurrentMachineState(String name, String timestamp) throws ParseException {
         Date givenTimestamp = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(timestamp);
-        Pageable paging = PageRequest.of(0, 1);
-        MonitoringData202009 lastShotBeforeTimestamp = monitoringData202009Repository.findShotBeforeTimestamp(name, givenTimestamp, paging).stream().findFirst().get();
+        MachineMonitoringPoorten machineMonitoringPoorten = machineMonitoringPoortenRepository.findByName(name);
+        List<ProductionData> productionDataList = productionDataRepository.findByBP(machineMonitoringPoorten.getBoard(), machineMonitoringPoorten.getPort());
+        if(productionDataList.isEmpty()){
+            return false;
+        }
 
-        long maxDuration = (long) (lastShotBeforeTimestamp.getShotTime() * 6);
-        long diffInMillies = Math.abs(givenTimestamp.getTime() - lastShotBeforeTimestamp.getTimestamp().getTime());
+        Pageable paging = PageRequest.of(0, 1);
+        List<MonitoringData202009> lastShotBeforeTimestamp = monitoringData202009Repository.findShotBeforeTimestamp(name, givenTimestamp, paging);
+
+        if(lastShotBeforeTimestamp.isEmpty()){
+            return false;
+        }
+
+        long maxDuration = (long) (lastShotBeforeTimestamp.stream().findFirst().get().getShotTime() * 6);
+        long diffInMillies = Math.abs(givenTimestamp.getTime() - lastShotBeforeTimestamp.stream().findFirst().get().getTimestamp().getTime());
         long diff = TimeUnit.SECONDS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
         return diff < maxDuration;
