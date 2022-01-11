@@ -29,6 +29,9 @@ public class Maintenance {
     @Column(name = "maintenacetype")
     private String maintenanceType;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "dayofmaintenance")
     private Date dayOfMaintenance;
 

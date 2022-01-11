@@ -57,7 +57,7 @@ public class MaintenanceController {
         }
     }
 
-    @Transactional
+    /*@Transactional
     @PutMapping("/maintenance/{id}")
     public ResponseEntity<?> UpdateMaintenance(@RequestBody Maintenance maintenanceDetails, @PathVariable(value = "id") long maintenance_id) throws Exception {
         Maintenance maintenance = maintenanceRepository.findById(maintenance_id)
